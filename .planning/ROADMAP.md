@@ -45,12 +45,12 @@ Plans:
   3. Research phase runs automatically (4 parallel researchers + synthesizer) and its findings inform the generated requirements
   4. Generated REQUIREMENTS.md has domain-specific categories, proper REQ-IDs, and full traceability to roadmap phases
   5. All generated artifacts are committed to git automatically with no approval gates
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
+- [ ] 02-01-PLAN.md — Config extraction from spec prose (inference, citations, per-value choices, config.json generation)
+- [ ] 02-02-PLAN.md — Research execution & requirements generation (4 parallel researchers, REQUIREMENTS.md with REQ-IDs)
+- [ ] 02-03-PLAN.md — Roadmap generation, atomic commit & completion (roadmapper, auto-commit all artifacts, summary)
 
 ### Phase 3: Brownfield & Validation
 **Goal**: The command correctly handles existing codebases and validates spec assumptions against research findings

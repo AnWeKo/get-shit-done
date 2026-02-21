@@ -9,22 +9,22 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Command Infrastructure
 
-- [ ] **CMD-01**: User can run `/gsd-new-project-from-spec [path]` to initialize a project from spec files
-- [ ] **CMD-02**: Command defaults to `./specs/` when no path argument provided
+- [x] **CMD-01**: User can run `/gsd-new-project-from-spec [path]` to initialize a project from spec files
+- [x] **CMD-02**: Command defaults to `./specs/` when no path argument provided
 - [ ] **CMD-03**: Command works in Claude Code, OpenCode, and Gemini CLI (installer handles conversion)
-- [ ] **CMD-04**: Command shows clear error when spec folder doesn't exist or contains no .md files
+- [x] **CMD-04**: Command shows clear error when spec folder doesn't exist or contains no .md files
 
 ### Spec Reading
 
-- [ ] **SPEC-01**: Workflow reads all `.md` files from the specified spec folder
-- [ ] **SPEC-02**: Workflow identifies each spec file's role (PRD, tech spec, user stories, constraints, etc.)
-- [ ] **SPEC-03**: Workflow synthesizes multiple spec files into a unified PROJECT.md using the existing template
-- [ ] **SPEC-04**: Workflow detects ambiguities and contradictions between spec files
-- [ ] **SPEC-05**: Workflow asks user targeted questions only when spec content is critically missing or contradictory
+- [x] **SPEC-01**: Workflow reads all `.md` files from the specified spec folder
+- [x] **SPEC-02**: Workflow identifies each spec file's role (PRD, tech spec, user stories, constraints, etc.)
+- [x] **SPEC-03**: Workflow synthesizes multiple spec files into a unified PROJECT.md using the existing template
+- [x] **SPEC-04**: Workflow detects ambiguities and contradictions between spec files
+- [x] **SPEC-05**: Workflow asks user targeted questions only when spec content is critically missing or contradictory
 
 ### Pipeline Automation
 
-- [ ] **PIPE-01**: Workflow generates PROJECT.md from spec content (identical format to interactive flow)
+- [x] **PIPE-01**: Workflow generates PROJECT.md from spec content (identical format to interactive flow)
 - [ ] **PIPE-02**: Workflow extracts config preferences from spec prose (e.g., "ship fast" → quick depth)
 - [ ] **PIPE-03**: Workflow falls back to asking user for config preferences not inferable from specs
 - [ ] **PIPE-04**: Workflow always runs research phase (4 parallel researchers + synthesizer)
@@ -70,16 +70,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CMD-01 | Phase 1 | Pending |
-| CMD-02 | Phase 1 | Pending |
+| CMD-01 | Phase 1 | Complete |
+| CMD-02 | Phase 1 | Complete |
 | CMD-03 | Phase 4 | Pending |
-| CMD-04 | Phase 1 | Pending |
-| SPEC-01 | Phase 1 | Pending |
-| SPEC-02 | Phase 1 | Pending |
-| SPEC-03 | Phase 1 | Pending |
-| SPEC-04 | Phase 1 | Pending |
-| SPEC-05 | Phase 1 | Pending |
-| PIPE-01 | Phase 1 | Pending |
+| CMD-04 | Phase 1 | Complete |
+| SPEC-01 | Phase 1 | Complete |
+| SPEC-02 | Phase 1 | Complete |
+| SPEC-03 | Phase 1 | Complete |
+| SPEC-04 | Phase 1 | Complete |
+| SPEC-05 | Phase 1 | Complete |
+| PIPE-01 | Phase 1 | Complete |
 | PIPE-02 | Phase 2 | Pending |
 | PIPE-03 | Phase 2 | Pending |
 | PIPE-04 | Phase 2 | Pending |
@@ -98,4 +98,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-21*
-*Last updated: 2026-02-21 after roadmap creation*
+*Last updated: 2026-02-21 after Phase 1 completion*

@@ -205,47 +205,300 @@ Classifying spec files...
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
 
 ## 6. Synthesis & Conflict Detection
-<!-- Plan 02 adds synthesis logic here -->
-<!-- This step will: -->
-<!--   - Merge and deduplicate content across classified spec files -->
-<!--   - Detect contradictions between files (cite file + section) -->
-<!--   - Detect critical gaps (missing information) -->
-<!--   - Batch all contradictions/gaps and ask user in one round -->
-<!--   - Classify extracted requirements as CLEAR / INFERABLE / AMBIGUOUS -->
+
+<!-- No regex-based spec parsing — agent interprets content semantically -->
+
+**Display progress:**
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ GSD ► SYNTHESIZING SPECS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Analyzing {N} classified spec files...
+```
+
+The orchestrating agent (Claude) performs synthesis — this is NOT delegated to a subagent. The agent processes all classified spec files in a single pass:
+
+### 6a. Merge Overlapping Content
+
+When multiple specs cover the same topic (e.g., two files both describe authentication requirements), merge and keep the most specific/detailed version of each point. Track which file(s) contributed to each merged item for traceability.
+
+**Rules:**
+- More specific beats more general ("JWT with RS256" beats "token-based auth")
+- Quantitative beats qualitative ("< 200ms response time" beats "fast responses")
+- Implementation detail beats vague intent ("PostgreSQL with row-level security" beats "secure database")
+- When specificity is equal, keep both and let the user decide in Step 6b
+
+### 6b. Detect Contradictions
+
+Scan all classified specs for conflicts between files. Classify each contradiction:
+
+**Major contradiction** (require user input):
+- Architectural conflicts: "REST API" vs "GraphQL", "monolith" vs "microservices"
+- Technology conflicts: "PostgreSQL" vs "MongoDB", "React" vs "Vue"
+- Feature-level conflicts: "real-time via WebSocket" vs "polling-based updates"
+- Scope conflicts: One spec includes a feature, another explicitly excludes it
+- Priority conflicts: Different specs disagree on what's most important
+
+**Minor difference** (resolve automatically):
+- Wording/style differences: "users" vs "customers" for the same concept
+- Slight detail variations: "5 retries" vs "3 retries" (use the more conservative/specific)
+- Formatting differences: Different heading structures for same content
+- Redundant coverage: Same point stated differently in two files
+
+For minor differences, automatically use the more specific/conservative version and note the resolution for traceability.
+
+### 6c. Detect Critical Gaps
+
+Identify information that is critically missing — things that would significantly affect project structure if assumed wrong:
+
+- No target users/audience defined across any spec
+- No tech stack preference stated (language, framework, database)
+- Core feature described but no success criteria or acceptance criteria
+- Conflicting priority signals with no resolution
+- No deployment or hosting strategy mentioned
+- Authentication/authorization model not specified despite user-facing features
+- No data model or persistence strategy for a data-heavy application
+
+**Skip gaps that are non-critical:**
+- Missing nice-to-haves or future roadmap items
+- Absent style/design preferences (use sensible defaults)
+- Missing CI/CD details (can be decided later)
+
+### 6d. Batch All Questions
+
+Collect ALL major contradictions and critical gaps found during analysis. Do NOT ask questions one at a time. Present them as a single batch after analysis completes.
+
+**Each question MUST cite source files and relevant quotes:**
+
+```
+**Conflict 1: API Architecture**
+- `prd.md` says: "Build a REST API with standard endpoints" (line ~15)
+- `tech-spec.md` says: "Use GraphQL for all client-server communication" (section 3)
+→ Which approach should we use? (REST / GraphQL / Hybrid)
+
+**Conflict 2: Database Choice**
+- `tech-spec.md` says: "Use PostgreSQL for relational data" (line ~42)
+- `architecture.md` says: "MongoDB for flexible document storage" (under Data Layer)
+→ Which database? (PostgreSQL / MongoDB / Both for different concerns)
+
+**Gap 1: Target Users**
+- No spec file defines the primary user persona or target audience
+→ Who are the primary users of this system?
+
+**Gap 2: Authentication**
+- `prd.md` mentions "secure login" but no spec details the auth approach
+→ What authentication method? (Email/password / OAuth / Magic links / Other)
+```
+
+**Present questions using AskUserQuestion** (if ≤ 3 questions) or as a numbered markdown list (if > 3 questions). Wait for responses to all questions before proceeding.
+
+**If no contradictions or gaps found:**
+```
+No conflicts detected — specs are consistent ✓
+```
+
+Display: `Asking about {N} conflicts and gaps...` (if any questions exist)
+
+### 6e. Classify Extracted Requirements
+
+After resolving all contradictions and gaps, classify every requirement extracted from specs:
+
+- **CLEAR:** Explicitly stated in specs, unambiguous — use directly
+- **INFERABLE:** Not stated explicitly but reasonably deduced from context — use, but document the inference in Key Decisions table with `⚠️ Revisit` outcome
+- **AMBIGUOUS:** Could go either way, needs user input — should have been caught in Steps 6b/6c above; if any remain, ask immediately
+
+Document all INFERABLE assumptions in the Key Decisions table so the user can review and override later.
 
 ## 7. PROJECT.md Generation
-<!-- Plan 02 adds generation logic here -->
-<!-- This step will: -->
-<!--   - Synthesize classified + resolved content into PROJECT.md template -->
-<!--   - Include inline traceability (which spec file each point came from) -->
-<!--   - Import decisions from specs into Key Decisions table -->
-<!--   - Note that PROJECT.md was generated from specs (with source file list) -->
-<!--   - Preserve content that doesn't map to PROJECT.md as supplementary files -->
+
+<!-- NEVER use extractFrontmatter() on user spec files -->
+<!-- Classify by content analysis, not filename -->
+
+**Display progress:**
+```
+Generating PROJECT.md...
+```
+
+**Create `.planning/` directory structure:**
+```bash
+mkdir -p .planning
+```
+
+Generate PROJECT.md following the **EXACT** template structure from `get-shit-done/templates/project.md`:
+
+```markdown
+# [Project Name from specs]
+
+## What This Is
+
+[Synthesized from specs — 2-3 sentences describing what this product does and who it's for.
+Use the language and framing from the spec files.]
+
+(Generated from spec files: file1.md, file2.md, ...)
+
+## Core Value
+
+[The ONE thing that matters most. Extract from the highest-priority content across all specs.
+If not explicitly stated, infer from the most emphasized features/goals.
+If unclear, should have been asked in Step 6.]
+
+## Requirements
+
+### Validated
+
+<!-- Shipped and confirmed valuable. -->
+
+(None yet — ship to validate)
+
+### Active
+
+<!-- Current scope. Building toward these. -->
+
+- [ ] [Requirement 1] <!-- from: prd.md -->
+- [ ] [Requirement 2] <!-- from: tech-spec.md, user-stories.md -->
+- [ ] [Requirement 3] <!-- from: prd.md -->
+
+[Each requirement has an inline HTML comment noting which spec file(s) it came from]
+
+### Out of Scope
+
+<!-- Explicit boundaries. Includes reasoning to prevent re-adding. -->
+
+- [Exclusion 1] — [why] <!-- from: constraints.md -->
+- [Exclusion 2] — [why] <!-- from: prd.md -->
+
+## Context
+
+[Background information synthesized from all specs:
+- Technical environment or ecosystem
+- Relevant prior work or experience
+- User research or feedback themes
+- Known issues to address
+
+Include source attributions for major points.]
+
+See `.planning/spec-references/` for detailed specifications preserved from input docs.
+
+## Constraints
+
+- **[Type]**: [What] — [Why] <!-- from: tech-spec.md -->
+- **[Type]**: [What] — [Why] <!-- from: constraints.md -->
+
+Common types: Tech stack, Timeline, Budget, Dependencies, Compatibility, Performance, Security
+
+## Key Decisions
+
+<!-- Decisions that constrain future work. Imported from specs + inferred. -->
+
+| Decision | Rationale | Outcome |
+|----------|-----------|---------|
+| [Choice explicitly stated in specs] | [Why — from spec content] <!-- from: tech-spec.md --> | — Pending |
+| [INFERABLE assumption] | [What was inferred and from which specs] | ⚠️ Revisit |
+| [Risky decision from specs] | [Why this seems risky — conflicting signals or unusual choice] | ⚠️ Revisit |
+
+---
+*Generated from spec files: [comma-separated list of all spec filenames]. Last updated: [date]*
+```
+
+**Inline traceability rules:**
+- Each major point in PROJECT.md notes which spec file(s) it came from
+- Use HTML comments for traceability: `<!-- from: filename.md -->`
+- This is non-intrusive and doesn't clutter the document when read as rendered markdown
+- If a point was synthesized from multiple files, list all: `<!-- from: prd.md, tech-spec.md -->`
+
+**Key Decisions import:**
+- Import decisions found in specs into the Key Decisions table
+- Flag any that seem risky or contradictory with `⚠️ Revisit` outcome
+- Add INFERABLE assumptions from Step 6e with `⚠️ Revisit` outcome
+- Decisions that were resolved via user questions in Step 6d get `— Pending` outcome
+
+**Supplementary content:**
+- Content from specs that doesn't map cleanly to PROJECT.md sections is preserved as separate reference files
+- This includes: detailed API schemas, comprehensive data models, extensive user story lists, UI wireframe descriptions, deployment runbooks, etc.
+
+```bash
+mkdir -p .planning/spec-references  # only if supplementary content exists
+```
+
+- Name files based on content type: `api-specification.md`, `data-model.md`, `user-stories.md`, etc.
+- Add the reference note in PROJECT.md Context section: `See .planning/spec-references/ for detailed specifications preserved from input docs.`
+- If no supplementary content exists, skip creating the directory and omit the reference note
+
+**Commit PROJECT.md (and supplementary files if any):**
+```bash
+node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: synthesize PROJECT.md from spec files" --files .planning/PROJECT.md
+```
+If supplementary reference files were created, include them in the commit:
+```bash
+node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: synthesize PROJECT.md from spec files" --files .planning/PROJECT.md .planning/spec-references/api-specification.md .planning/spec-references/data-model.md
+```
+
+**CRITICAL: If `.planning/` already exists and user said "Overwrite" in Step 2, that permission covers this step.**
 
 ## 8. Done
-<!-- Plan 02 adds completion logic here -->
-<!-- This step will: -->
-<!--   - Commit PROJECT.md -->
-<!--   - Display completion summary -->
-<!--   - Show next steps -->
+
+**Display completion summary:**
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ GSD ► PROJECT INITIALIZED ✓
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+**[Project Name]** (from spec files)
+
+| Artifact       | Location                    |
+|----------------|-----------------------------|
+| Project        | `.planning/PROJECT.md`      |
+| Spec References| `.planning/spec-references/`|
+
+**Source:** {N} spec files from {path}
+**Conflicts resolved:** {N} (or "None")
+**Questions asked:** {N} (or "None — specs were complete")
+
+───────────────────────────────────────────────────────────────
+
+## ▶ Next Up
+
+**Pipeline automation** — generate config, research, requirements, roadmap
+
+This phase produced PROJECT.md only. To complete the full pipeline, 
+Phase 2 will add: config.json → research → REQUIREMENTS.md → ROADMAP.md → STATE.md
+
+For now, you can:
+- Review the generated PROJECT.md: `cat .planning/PROJECT.md`
+- Re-run with different specs: `/gsd:new-project-from-spec [path]`
+
+<sub>`/clear` first → fresh context window</sub>
+
+───────────────────────────────────────────────────────────────
+```
+
+**Notes:**
+- Omit the "Spec References" row from the artifact table if no supplementary files were created
+- If the "Overwrite" path was taken in Step 2, mention it: "Replaced existing .planning/ artifacts"
 
 </process>
 
 <output>
 
 - `.planning/PROJECT.md` — project context synthesized from spec files
+- `.planning/spec-references/` — supplementary content preserved from specs (if any)
 
 </output>
 
 <success_criteria>
 
 - [ ] Spec folder validated (exists, contains .md files)
-- [ ] All .md files read from spec folder
-- [ ] Each file classified by content role
-- [ ] Non-markdown files warned about (not errored)
-- [ ] Actionable error messages for missing folder / no .md files
-- [ ] Existing .planning/ detection asks before overwriting
-- [ ] Brownfield detection and mapping offer works
-- [ ] PROJECT.md synthesized from spec content (Plan 02)
+- [ ] All .md files read and classified by role
+- [ ] Contradictions detected and major ones presented to user with citations
+- [ ] Critical gaps detected and presented in batch
+- [ ] Minor differences resolved automatically
+- [ ] PROJECT.md generated matching template structure
+- [ ] Inline traceability (source file attributions) present
+- [ ] Supplementary content preserved in spec-references/
+- [ ] Key Decisions imported from specs, risky ones flagged
+- [ ] PROJECT.md committed to git
+- [ ] User knows Phase 2 adds pipeline automation
 
 </success_criteria>

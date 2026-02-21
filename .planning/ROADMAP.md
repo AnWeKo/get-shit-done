@@ -12,7 +12,7 @@ This project adds a `/gsd-new-project-from-spec` command that reads a folder of 
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Spec Reading & Synthesis** - Command entry point that reads spec files and produces PROJECT.md
+- [x] **Phase 1: Spec Reading & Synthesis** - Command entry point that reads spec files and produces PROJECT.md
 - [ ] **Phase 2: Pipeline Automation** - Wire full artifact generation: config, research, requirements, roadmap, auto-commit
 - [ ] **Phase 3: Brownfield & Validation** - Existing codebase detection and spec-vs-research validation
 - [ ] **Phase 4: Multi-Runtime & Polish** - Cross-runtime compatibility and edge case handling
@@ -33,7 +33,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md — Command entry point & spec reading engine (validation, file reading, classification)
-- [ ] 01-02-PLAN.md — Spec synthesis & PROJECT.md generation (conflict detection, gap handling, template-compliant output)
+- [x] 01-02-PLAN.md — Spec synthesis & PROJECT.md generation (conflict detection, gap handling, template-compliant output)
 
 ### Phase 2: Pipeline Automation
 **Goal**: One command produces all planning artifacts (PROJECT.md → config.json → research → REQUIREMENTS.md → ROADMAP.md → STATE.md) and commits everything automatically
@@ -87,7 +87,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Spec Reading & Synthesis | 1/2 | In progress | - |
+| 1. Spec Reading & Synthesis | 2/2 | Complete | 2026-02-21 |
 | 2. Pipeline Automation | 0/3 | Not started | - |
 | 3. Brownfield & Validation | 0/2 | Not started | - |
 | 4. Multi-Runtime & Polish | 0/2 | Not started | - |

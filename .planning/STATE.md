@@ -5,32 +5,32 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Fully automated project initialization from spec files — user provides specs, GSD produces complete planning structure ready for execution
-**Current focus:** Phase 1: Spec Reading & Synthesis
+**Current focus:** Phase 2: Pipeline Automation (Phase 1 complete)
 
 ## Current Position
 
-Phase: 1 of 4 (Spec Reading & Synthesis)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-02-21 — Completed 01-01-PLAN.md
+Phase: 1 of 4 (Spec Reading & Synthesis) — COMPLETE
+Plan: 2 of 2 in current phase
+Status: Phase complete
+Last activity: 2026-02-21 — Completed 01-02-PLAN.md
 
-Progress: [█░░░░░░░░░] 11%
+Progress: [██░░░░░░░░] 22%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 2 min
-- Total execution time: 0.03 hours
+- Total plans completed: 2
+- Average duration: 3.5 min
+- Total execution time: 0.12 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1. Spec Reading & Synthesis | 1/2 | 2 min | 2 min |
+| 1. Spec Reading & Synthesis | 2/2 ✓ | 7 min | 3.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2 min)
+- Last 5 plans: 01-01 (2 min), 01-02 (5 min)
 - Trend: —
 
 *Updated after each plan completion*
@@ -48,6 +48,10 @@ Recent decisions affecting current work:
 - [01-01]: Reuse existing `init new-project` CLI command — no new init subcommand needed
 - [01-01]: Top-level only spec file reading (not recursive)
 - [01-01]: 9 classification roles for spec file types
+- [01-02]: Major contradictions require user input; minor differences auto-resolve
+- [01-02]: All conflict/gap questions batched with file+quote citations
+- [01-02]: INFERABLE assumptions documented in Key Decisions with ⚠️ Revisit flag
+- [01-02]: Supplementary content preserved in .planning/spec-references/
 
 ### Pending Todos
 
@@ -55,11 +59,10 @@ None yet.
 
 ### Blockers/Concerns
 
-- Spec synthesis prompt engineering is the novel challenge — no existing pattern to copy directly
 - Token limit strategy for large spec folders needs decision during Phase 4 planning
 
 ## Session Continuity
 
-Last session: 2026-02-21T21:15:56Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-02-21T22:25:00Z
+Stopped at: Completed 01-02-PLAN.md — Phase 1 complete
 Resume file: None

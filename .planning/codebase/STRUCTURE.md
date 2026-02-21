@@ -40,6 +40,7 @@ get-shit-done/
 │       ├── map-codebase.md
 │       ├── new-milestone.md
 │       ├── new-project.md
+│       ├── new-project-from-spec.md
 │       ├── pause-work.md
 │       ├── plan-milestone-gaps.md
 │       ├── plan-phase.md
@@ -142,6 +143,7 @@ get-shit-done/
 │       ├── map-codebase.md
 │       ├── new-milestone.md
 │       ├── new-project.md
+│       ├── new-project-from-spec.md
 │       ├── pause-work.md
 │       ├── plan-milestone-gaps.md
 │       ├── plan-phase.md

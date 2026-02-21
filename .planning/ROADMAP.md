@@ -32,7 +32,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Command entry point & spec reading engine (validation, file reading, classification)
+- [x] 01-01-PLAN.md — Command entry point & spec reading engine (validation, file reading, classification)
 - [ ] 01-02-PLAN.md — Spec synthesis & PROJECT.md generation (conflict detection, gap handling, template-compliant output)
 
 ### Phase 2: Pipeline Automation
@@ -87,7 +87,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Spec Reading & Synthesis | 0/2 | Not started | - |
+| 1. Spec Reading & Synthesis | 1/2 | In progress | - |
 | 2. Pipeline Automation | 0/3 | Not started | - |
 | 3. Brownfield & Validation | 0/2 | Not started | - |
 | 4. Multi-Runtime & Polish | 0/2 | Not started | - |

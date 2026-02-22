@@ -1,5 +1,5 @@
 <purpose>
-Initialize a project from spec files — full pipeline from reading specs to committed planning artifacts. Reads markdown specs from a folder, classifies each file's role, detects contradictions and gaps, synthesizes PROJECT.md, extracts config preferences, runs domain research, generates requirements, creates roadmap, and commits everything atomically. This is the spec-driven alternative to the interactive questioning flow in `new-project.md`.
+Initialize a project from spec files — full pipeline from reading specs to committed planning artifacts. Reads markdown specs from a folder, classifies each file's role, detects contradictions and gaps, synthesizes PROJECT.md, extracts config preferences, runs domain research, generates requirements, creates roadmap, and commits everything atomically. Handles large spec folders (>100KB) via priority-based content budgeting. This is the spec-driven alternative to the interactive questioning flow in `new-project.md`.
 
 Instead of deep interactive questioning, this workflow:
 1. Reads all .md files from a spec folder
@@ -187,6 +187,8 @@ Exit.
    ```
 
 3. Read each file's full content using the Read tool.
+   - **Skip empty files:** If a `.md` file has no content (0 bytes or whitespace only), skip it silently — do not count, list, or classify it.
+   - **Handle unreadable files gracefully:** If a file cannot be read cleanly (encoding errors, binary content with `.md` extension), read what's readable and continue. Do not abort the workflow for a single unreadable file.
 
 4. Display file list with sizes:
    ```
@@ -207,14 +209,26 @@ Exit.
    # Check for non-.md files
    ls "$SPEC_PATH" | grep -v '\.md$'
    ```
-   If non-markdown files exist:
+   If non-markdown files exist, display up to 5 filenames:
    ```
-   ⚠ Skipping non-markdown files: schema.json, notes.txt
+   ⚠ Skipping {N} non-markdown files ({comma-separated list up to 5 names}...)
    ```
+   Example: `⚠ Skipping 3 non-markdown files (schema.json, logo.png, notes.txt)`
+
+### Content Budget Check
+
+After reading all files, calculate the total content size across all read `.md` files (sum of character counts).
+
+- **If total ≤ 100KB:** Proceed normally — all files will be used in full. No budget intervention needed.
+- **If total > 100KB:** Display `⚠ Large spec folder ({X} KB total) — applying content budget` and set a flag `content_budget_active = true` for use after Step 5 classification.
+
+> **Note:** The actual content trimming happens after Step 5 classification, because classification roles determine which files are high-priority. See Step 5b.
 
 Store all file contents for the classification step.
 
 ## 5. Spec File Classification
+
+**Classify all files on their full content first.** Content budget trimming (if applicable) happens after classification, using the assigned roles to determine priority tiers.
 
 **Classify each spec file by analyzing its CONTENT (not filename).**
 
@@ -253,6 +267,36 @@ Classifying spec files...
 
 **CRITICAL:** Do NOT build a regex-based spec parser. Treat specs as unstructured text for agent consumption. The agent interprets meaning semantically.
 
+### 5b. Content Budget Trimming
+
+**If `content_budget_active` is false (total content ≤ 100KB), skip this sub-section entirely.** All files proceed with full content.
+
+**If `content_budget_active` is true (total content > 100KB), apply priority-based trimming:**
+
+The 9 classification roles map to three priority tiers:
+
+| Tier | Roles | Treatment |
+|------|-------|-----------|
+| **Tier 1 — Always full read** | PRD / Product Requirements, Technical Specification, Constraints / Non-functional Requirements | Always included in full regardless of budget |
+| **Tier 2 — Full read if budget allows** | Architecture / System Design, API Specification, Data Model / Schema | Included in full until budget exhausted |
+| **Tier 3 — Summarize when over budget** | User Stories / Use Cases, UI/UX Specification, Other / General | Summarized to fit within remaining budget |
+
+**Trimming procedure:**
+
+1. Start with a 100KB character budget.
+2. Deduct all Tier 1 files (always included in full). These are never trimmed regardless of their size.
+3. Add Tier 2 files in full, one at a time, until the budget is exhausted. If a Tier 2 file would exceed the remaining budget, summarize it instead of including it in full.
+4. All remaining Tier 2 files (that didn't fit) and all Tier 3 files: produce a condensed summary of each. The summary should preserve key requirements, constraints, and any content that appears contradictory or ambiguous — use your judgment on summarization approach and compression level.
+5. Replace the stored full content for each summarized file with the summary text. Mark each summarized file with a `summarized: true` flag alongside its filename, role, and content.
+
+**Display trimming results:**
+```
+Content budget applied:
+  Tier 1 (full): {list of filenames}
+  Tier 2 (full): {list of filenames}
+  Summarized: {list of filenames}
+```
+
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
 <!-- Plan 02 continues from here — synthesis, conflict detection, output   -->
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -283,6 +327,8 @@ When multiple specs cover the same topic (e.g., two files both describe authenti
 - When specificity is equal, keep both and let the user decide in Step 6b
 
 ### 6b. Detect Contradictions
+
+**Summarized file notification rule:** If a file marked `summarized: true` is involved in a detected contradiction or gap below, append to the user question: `⚠ Note: {filename} was summarized due to spec folder size. Review the original file for full context before resolving.` Do NOT proactively list which files were summarized — only mention summarization when it's relevant to a user decision.
 
 Scan all classified specs for conflicts between files. Classify each contradiction:
 
@@ -1327,5 +1373,6 @@ If `.planning/spec-references/` was created, include an additional row:
 - [ ] Major contradictions surfaced to user with resolution options
 - [ ] Minor contradictions flagged in Key Decisions (non-blocking)
 - [ ] Resolved contradictions reflected in PROJECT.md and REQUIREMENTS.md
+- [ ] Large spec folders handled via content budgeting without token limit failures
 
 </success_criteria>

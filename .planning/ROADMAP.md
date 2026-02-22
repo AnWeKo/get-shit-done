@@ -35,7 +35,11 @@ See MILESTONES.md for details.
   2. The command file follows GSD conventions (YAML frontmatter, agent reference, tool grants)
   3. The workflow reads ROADMAP.md and correctly identifies all unplanned phases by phase number
   4. If no unplanned phases exist, the user sees a clear "nothing to plan" message
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — CLI tooling: roadmap unplanned subcommand + init plan-all + tests
+- [ ] 05-02-PLAN.md — Slash command + discovery workflow for /gsd-plan-all
 
 ### Phase 6: Sequential Planning Loop
 **Goal**: Every unplanned phase gets a complete plan, committed individually, with the user seeing progress throughout

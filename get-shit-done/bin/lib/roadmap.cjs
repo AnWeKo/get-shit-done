@@ -90,12 +90,13 @@ function cmdRoadmapGetPhase(cwd, phaseNum, raw) {
   }
 }
 
-function cmdRoadmapAnalyze(cwd, raw) {
+// ─── Internal Analysis Helper ────────────────────────────────────────────────
+
+function analyzeRoadmapInternal(cwd) {
   const roadmapPath = path.join(cwd, '.planning', 'ROADMAP.md');
 
   if (!fs.existsSync(roadmapPath)) {
-    output({ error: 'ROADMAP.md not found', milestones: [], phases: [], current_phase: null }, raw);
-    return;
+    return { error: 'ROADMAP.md not found', milestones: [], phases: [], current_phase: null };
   }
 
   const content = fs.readFileSync(roadmapPath, 'utf-8');
@@ -201,7 +202,7 @@ function cmdRoadmapAnalyze(cwd, raw) {
   const detailPhases = new Set(phases.map(p => p.number));
   const missingDetails = [...checklistPhases].filter(p => !detailPhases.has(p));
 
-  const result = {
+  return {
     milestones,
     phases,
     phase_count: phases.length,
@@ -213,8 +214,40 @@ function cmdRoadmapAnalyze(cwd, raw) {
     next_phase: nextPhase ? nextPhase.number : null,
     missing_phase_details: missingDetails.length > 0 ? missingDetails : null,
   };
+}
 
+function cmdRoadmapAnalyze(cwd, raw) {
+  const result = analyzeRoadmapInternal(cwd);
   output(result, raw);
+}
+
+// ─── Unplanned Phase Discovery ───────────────────────────────────────────────
+
+function cmdRoadmapUnplanned(cwd, raw) {
+  const analysis = analyzeRoadmapInternal(cwd);
+
+  if (analysis.error) {
+    output({ error: analysis.error, unplanned: [], count: 0, total_phases: 0 }, raw);
+    return;
+  }
+
+  // Filter: no plans on disk AND not marked complete in ROADMAP.md
+  const unplanned = analysis.phases
+    .filter(p => p.plan_count === 0 && !p.roadmap_complete)
+    .map(p => ({
+      number: p.number,
+      name: p.name,
+      goal: p.goal,
+      disk_status: p.disk_status,
+      has_context: p.has_context,
+      has_research: p.has_research,
+    }));
+
+  output({
+    unplanned,
+    count: unplanned.length,
+    total_phases: analysis.phase_count,
+  }, raw);
 }
 
 function cmdRoadmapUpdatePlanProgress(cwd, phaseNum, raw) {
@@ -294,5 +327,7 @@ function cmdRoadmapUpdatePlanProgress(cwd, phaseNum, raw) {
 module.exports = {
   cmdRoadmapGetPhase,
   cmdRoadmapAnalyze,
+  cmdRoadmapUnplanned,
   cmdRoadmapUpdatePlanProgress,
+  analyzeRoadmapInternal,
 };

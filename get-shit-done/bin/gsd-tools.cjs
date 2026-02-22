@@ -371,10 +371,12 @@ async function main() {
         roadmap.cmdRoadmapGetPhase(cwd, args[2], raw);
       } else if (subcommand === 'analyze') {
         roadmap.cmdRoadmapAnalyze(cwd, raw);
+      } else if (subcommand === 'unplanned') {
+        roadmap.cmdRoadmapUnplanned(cwd, raw);
       } else if (subcommand === 'update-plan-progress') {
         roadmap.cmdRoadmapUpdatePlanProgress(cwd, args[2], raw);
       } else {
-        error('Unknown roadmap subcommand. Available: get-phase, analyze, update-plan-progress');
+        error('Unknown roadmap subcommand. Available: get-phase, analyze, unplanned, update-plan-progress');
       }
       break;
     }

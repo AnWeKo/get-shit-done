@@ -57,25 +57,25 @@ Requirements for `/gsd-plan-all` batch planning command.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CMD-01 | — | Pending |
-| CMD-02 | — | Pending |
-| CMD-03 | — | Pending |
-| ORCH-01 | — | Pending |
-| ORCH-02 | — | Pending |
-| ORCH-03 | — | Pending |
-| ORCH-04 | — | Pending |
-| ORCH-05 | — | Pending |
-| RTRY-01 | — | Pending |
-| RTRY-02 | — | Pending |
-| RTRY-03 | — | Pending |
-| STAT-01 | — | Pending |
-| STAT-02 | — | Pending |
+| CMD-01 | Phase 5 | Pending |
+| CMD-02 | Phase 5 | Pending |
+| CMD-03 | Phase 5 | Pending |
+| ORCH-01 | Phase 5 | Pending |
+| ORCH-02 | Phase 6 | Pending |
+| ORCH-03 | Phase 6 | Pending |
+| ORCH-04 | Phase 6 | Pending |
+| ORCH-05 | Phase 6 | Pending |
+| STAT-01 | Phase 6 | Pending |
+| RTRY-01 | Phase 7 | Pending |
+| RTRY-02 | Phase 7 | Pending |
+| RTRY-03 | Phase 7 | Pending |
+| STAT-02 | Phase 7 | Pending |
 
 **Coverage:**
 - v2.0 requirements: 13 total
-- Mapped to phases: 0
-- Unmapped: 13
+- Mapped to phases: 13
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-02-22*
-*Last updated: 2026-02-22 after initial definition*
+*Last updated: 2026-02-22 after roadmap creation*

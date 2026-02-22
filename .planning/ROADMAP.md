@@ -74,11 +74,11 @@ Plans:
   1. `/gsd-new-project-from-spec` works in Claude Code, OpenCode, and Gemini CLI (installer correctly converts the command for each runtime)
   2. Large spec folders (>100KB total) are handled without token limit failures
   3. End-to-end test: a realistic spec folder produces artifacts that are fully compatible with downstream GSD commands (`/gsd-plan-phase`, `/gsd-execute-plan`, etc.)
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [ ] 04-01-PLAN.md — Large spec folder resilience & edge case handling (content budgeting, priority tiers, empty/encoding edge cases)
+- [ ] 04-02-PLAN.md — Cross-runtime verification & E2E test fixture (installer output checks, test fixture, automated tests)
 
 ## Progress
 

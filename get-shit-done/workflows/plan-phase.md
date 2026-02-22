@@ -26,7 +26,7 @@ Parse JSON for: `researcher_model`, `planner_model`, `checker_model`, `research_
 
 ## 2. Parse and Normalize Arguments
 
-Extract from $ARGUMENTS: phase number (integer or decimal like `2.1`), flags (`--research`, `--skip-research`, `--gaps`, `--skip-verify`).
+Extract from $ARGUMENTS: phase number (integer or decimal like `2.1`), flags (`--research`, `--skip-research`, `--gaps`, `--skip-verify`, `--batch`).
 
 **If no phase number:** Detect next unplanned phase from roadmap.
 
@@ -52,6 +52,8 @@ Check `context_path` from init JSON.
 If `context_path` is not null, display: `Using phase context from: ${context_path}`
 
 **If `context_path` is null (no CONTEXT.md exists):**
+
+**If `--batch` flag is set:** Always "Continue without context" — do not prompt. Proceed to step 5.
 
 Use AskUserQuestion:
 - header: "No context"
@@ -159,7 +161,9 @@ node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit-docs "docs(phase-${PHASE})
 ls "${PHASE_DIR}"/*-PLAN.md 2>/dev/null
 ```
 
-**If exists:** Offer: 1) Add more plans, 2) View existing, 3) Replan from scratch.
+**If exists AND `--batch` flag is set:** Plans already exist for this phase — skip planning. Return "PLANNING COMPLETE" with a note that plans already existed. Proceed to step 13.
+
+**If exists (interactive mode):** Offer: 1) Add more plans, 2) View existing, 3) Replan from scratch.
 
 ## 7. Use Context Paths from INIT
 
@@ -337,8 +341,12 @@ After planner returns -> spawn checker again (step 10), increment iteration_coun
 
 **If iteration_count >= 3:**
 
-Display: `Max iterations reached. {N} issues remain:` + issue list
+**If `--batch` flag is set:**
+Display: `Max iterations reached (batch mode). Proceeding with best available plan. {N} issues remain.`
+Proceed directly to step 13 (skip the interactive offer).
 
+**Otherwise (interactive mode):**
+Display: `Max iterations reached. {N} issues remain:` + issue list
 Offer: 1) Force proceed, 2) Provide guidance and retry, 3) Abandon
 
 ## 13. Present Final Status

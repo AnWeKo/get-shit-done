@@ -6,11 +6,13 @@ Instead of deep interactive questioning, this workflow:
 2. Classifies each file by content (PRD, tech spec, user stories, etc.)
 3. Synthesizes a unified PROJECT.md using the project template
 4. Detects contradictions and gaps, asking the user only when critical
-5. Extracts config preferences from spec prose (or asks user)
-6. Runs 4 parallel domain researchers + synthesizer
-7. Generates REQUIREMENTS.md with REQ-IDs and traceability
-8. Creates ROADMAP.md and STATE.md via roadmapper agent
-9. Commits all artifacts atomically
+5. For brownfield projects, extracts existing capabilities as Validated requirements
+6. Extracts config preferences from spec prose (or asks user)
+7. Runs 4 parallel domain researchers + synthesizer
+8. Validates spec assumptions against research, surfacing contradictions for user resolution
+9. Generates REQUIREMENTS.md with REQ-IDs and traceability
+10. Creates ROADMAP.md and STATE.md via roadmapper agent
+11. Commits all artifacts atomically
 
 Same output format as `/gsd:new-project` — downstream tools work unchanged.
 </purpose>
@@ -1246,6 +1248,16 @@ Created 6 artifacts:
 **Research dimensions:** 4 (Stack, Features, Architecture, Pitfalls)
 ```
 
+If brownfield (codebase map was used), add row:
+```
+| Validated capabilities | {N} from codebase |
+```
+
+If contradictions were found (from Steps 10f-10h), add row:
+```
+| Contradictions resolved | {N} major, {M} minor |
+```
+
 If `.planning/spec-references/` was created, include an additional row:
 
 ```
@@ -1285,6 +1297,8 @@ If `.planning/spec-references/` was created, include an additional row:
 - `.planning/STATE.md` — project state for session continuity
 - `.planning/spec-references/` — supplementary content preserved from specs (if any)
 
+**Brownfield note:** For brownfield projects, PROJECT.md will contain a Validated requirements section (existing capabilities from codebase map) and an "Existing Capabilities" section for codebase features not covered by specs.
+
 </output>
 
 <success_criteria>
@@ -1306,5 +1320,12 @@ If `.planning/spec-references/` was created, include an additional row:
 - [ ] REQUIREMENTS.md traceability updated with phase assignments
 - [ ] All artifacts committed atomically (or skip message shown if no git / commit_docs=false)
 - [ ] User knows next step is `/gsd-discuss-phase 1`
+- [ ] Brownfield detection offers mapping options when codebase map exists
+- [ ] Existing capabilities extracted and merged as Validated in PROJECT.md (brownfield)
+- [ ] Codebase context fed to research agents (brownfield)
+- [ ] Spec assumptions validated against research findings
+- [ ] Major contradictions surfaced to user with resolution options
+- [ ] Minor contradictions flagged in Key Decisions (non-blocking)
+- [ ] Resolved contradictions reflected in PROJECT.md and REQUIREMENTS.md
 
 </success_criteria>

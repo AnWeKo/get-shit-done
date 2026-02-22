@@ -436,47 +436,162 @@ node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: synthesize PROJECT.
 
 **CRITICAL: If `.planning/` already exists and user said "Overwrite" in Step 2, that permission covers this step.**
 
-## 8. Done
+## 8. Config Extraction from Specs
 
-**Display completion summary:**
+**Display progress:**
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ GSD ► EXTRACTING CONFIG
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+### 8a. Check for Existing Config (Re-run Scenario)
+
+**If `.planning/config.json` already exists:**
+
+Use AskUserQuestion:
+- header: "Config"
+- question: "Found existing config.json. How should I proceed?"
+- options:
+  - "Use existing config" — Keep current settings, skip to Step 9
+  - "Re-infer from specs" — Analyze spec prose for config preferences again
+  - "Start fresh" — Use defaults for all values, skip inference
+
+**If "Use existing config":** Read `.planning/config.json`, display its values, skip to Step 9.
+
+**If "Re-infer from specs":** Continue to Step 8b below.
+
+**If "Start fresh":** Use defaults for all values, skip inference, proceed directly to Step 8c to present defaults for confirmation.
+
+**If `.planning/config.json` does not exist:** Continue to Step 8b.
+
+### 8b. Analyze Spec Prose for Config Signals
+
+The agent scans all classified spec file content (from Step 5) for config preference signals. For each config key, look for natural language cues that suggest a value. **Conservative inference:** only set a value when the signal is very clear. When remotely ambiguous, mark as "needs confirmation."
+
+**Skip inference for purely technical keys** that don't have natural prose mappings (e.g., `max_parallel_agents`) — use defaults for those.
+
+**Signal-to-config mapping table:**
+
+| Config Key | Spec Signals → Value | Default |
+|------------|---------------------|---------|
+| `mode` | "move fast", "no blockers", "fully automated" → `yolo`. "careful", "review each step", "approve before" → `interactive` | `yolo` |
+| `depth` | "rapid prototyping", "MVP", "ship fast", "quick experiment" → `quick`. "production", "enterprise", "mission-critical", "thorough" → `comprehensive` | `standard` |
+| `parallelization` | "speed matters", "fast execution", "parallel" → `true`. "sequential", "one at a time" → `false` | `true` |
+| `commit_docs` | "track everything", "audit trail", "version control planning" → `true`. "local only", "no tracking" → `false` | `true` |
+| `model_profile` | "high quality", "thorough analysis", "best results" → `quality`. "budget", "cost efficient", "minimize cost" → `budget` | `balanced` |
+| `workflow.research` | Always `true` for spec-from-file flow (locked decision: research always runs to validate spec assumptions) | `true` |
+| `workflow.plan_check` | "verify", "quality gates", "validate plans" → `true`. "skip verification", "trust the plan" → `false` | `true` |
+| `workflow.verifier` | "verify", "validate work", "confirm deliverables" → `true`. "skip checks" → `false` | `true` |
+
+**For each config key:**
+1. Scan all classified spec file content for signal phrases
+2. If a clear signal is found: record the inferred value AND the source citation (file name + relevant passage)
+3. If no signal or ambiguous signals: mark as "default — needs confirmation"
+4. If contradictory signals found in different spec files: record both citations, mark as "contradictory — needs user choice" (same pattern as Phase 1 contradiction handling in Step 6b)
+
+### 8c. Present Unified Config View with Citations
+
+Display ALL config values in one view. Each value shows its source:
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│ Config Extraction                                                       │
+├──────────────────────┬────────────────┬─────────────────────────────────┤
+│ Key                  │ Value          │ Source                          │
+├──────────────────────┼────────────────┼─────────────────────────────────┤
+│ mode                 │ yolo           │ tech-spec.md: "fully automated" │
+│ depth                │ comprehensive  │ prd.md: "production-grade"      │
+│ parallelization      │ true           │ (default)                       │
+│ commit_docs          │ true           │ (default)                       │
+│ model_profile        │ quality        │ prd.md: "thorough analysis"     │
+│ workflow.research    │ true           │ (always — spec-from-file flow)  │
+│ workflow.plan_check  │ true           │ (default)                       │
+│ workflow.verifier    │ true           │ (default)                       │
+└──────────────────────┴────────────────┴─────────────────────────────────┘
+```
+
+**For inferred values:** Show the spec passage that drove the inference (e.g., "`tech-spec.md` line 12: 'rapid prototyping' → depth: quick")
+
+**For default values:** Show "(default)" with brief rationale
+
+**For contradictory signals:** Show both citations and ask user to choose (same pattern as Phase 1 contradiction handling)
+
+### 8d. Per-Value User Confirmation
+
+Each configurable value gets its own AskUserQuestion option set — NOT a single freeform prompt. Present as a series of questions, one per config key.
+
+For each config key, use AskUserQuestion:
+- header: "[Config Key]"
+- question: "Inferred [value] from specs ([citation]). Confirm or override?"
+  OR: "No spec signal found. Default is [value]. Confirm or override?"
+- options: all valid values for that key (e.g., for `mode`: "yolo", "interactive")
+
+**For `workflow.research`:** Do NOT ask — always `true` for the spec-from-file flow (locked decision). Display it in the config view but skip the question.
+
+**After all confirmations, display final summary:**
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- GSD ► PROJECT INITIALIZED ✓
+ GSD ► CONFIG FINALIZED ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-**[Project Name]** (from spec files)
-
-| Artifact       | Location                    |
-|----------------|-----------------------------|
-| Project        | `.planning/PROJECT.md`      |
-| Spec References| `.planning/spec-references/`|
-
-**Source:** {N} spec files from {path}
-**Conflicts resolved:** {N} (or "None")
-**Questions asked:** {N} (or "None — specs were complete")
-
-───────────────────────────────────────────────────────────────
-
-## ▶ Next Up
-
-**Pipeline automation** — generate config, research, requirements, roadmap
-
-This phase produced PROJECT.md only. To complete the full pipeline, 
-Phase 2 will add: config.json → research → REQUIREMENTS.md → ROADMAP.md → STATE.md
-
-For now, you can:
-- Review the generated PROJECT.md: `cat .planning/PROJECT.md`
-- Re-run with different specs: `/gsd:new-project-from-spec [path]`
-
-<sub>`/clear` first → fresh context window</sub>
-
-───────────────────────────────────────────────────────────────
+mode: yolo
+depth: comprehensive
+parallelization: true
+commit_docs: true
+model_profile: quality
+workflow.research: true (always)
+workflow.plan_check: true
+workflow.verifier: true
 ```
 
-**Notes:**
-- Omit the "Spec References" row from the artifact table if no supplementary files were created
-- If the "Overwrite" path was taken in Step 2, mention it: "Replaced existing .planning/ artifacts"
+**Log user overrides:** If the user changed any inferred value, log the override as a decision in PROJECT.md's Key Decisions table:
+
+```markdown
+| Config: [key] set to [value] | User override — spec suggested [other] | — Active |
+```
+
+### 8e. Write config.json
+
+```bash
+mkdir -p .planning
+```
+
+Write `.planning/config.json` with all finalized values:
+
+```json
+{
+  "mode": "yolo|interactive",
+  "depth": "quick|standard|comprehensive",
+  "parallelization": true|false,
+  "commit_docs": true|false,
+  "model_profile": "quality|balanced|budget",
+  "workflow": {
+    "research": true,
+    "plan_check": true|false,
+    "verifier": true|false
+  }
+}
+```
+
+**Note:** `workflow.research` is always `true` for the spec-from-file flow (locked decision: research always runs to validate and supplement spec content).
+
+**If `commit_docs` = false:** Add `.planning/` to `.gitignore` (create if needed).
+
+**Do NOT commit config.json here** — all artifacts will be committed in one atomic commit at the end of the pipeline (Plan 03).
+
+## 9. Resolve Model Profile
+
+Use the model variables from the init JSON parsed in Step 1: `researcher_model`, `synthesizer_model`, `roadmapper_model`.
+
+These were already parsed from the `INIT` JSON in Step 1. This step documents that the workflow uses these model variables for agent spawning in subsequent steps:
+
+- `researcher_model` → used when spawning research agents (Step 10)
+- `synthesizer_model` → used when spawning the research synthesizer (Step 10)
+- `roadmapper_model` → used when spawning the roadmapper agent (Step 12)
+
+<!-- Steps 10-12 added by Plan 02 and Plan 03 -->
 
 </process>
 

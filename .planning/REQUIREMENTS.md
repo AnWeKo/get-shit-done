@@ -11,7 +11,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **CMD-01**: User can run `/gsd-new-project-from-spec [path]` to initialize a project from spec files
 - [x] **CMD-02**: Command defaults to `./specs/` when no path argument provided
-- [ ] **CMD-03**: Command works in Claude Code, OpenCode, and Gemini CLI (installer handles conversion)
+- [x] **CMD-03**: Command works in Claude Code, OpenCode, and Gemini CLI (installer handles conversion)
 - [x] **CMD-04**: Command shows clear error when spec folder doesn't exist or contains no .md files
 
 ### Spec Reading
@@ -72,7 +72,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | CMD-01 | Phase 1 | Complete |
 | CMD-02 | Phase 1 | Complete |
-| CMD-03 | Phase 4 | Pending |
+| CMD-03 | Phase 4 | Complete |
 | CMD-04 | Phase 1 | Complete |
 | SPEC-01 | Phase 1 | Complete |
 | SPEC-02 | Phase 1 | Complete |
@@ -98,4 +98,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-21*
-*Last updated: 2026-02-22 after Phase 3 completion*
+*Last updated: 2026-02-22 after Phase 4 completion*

@@ -30,7 +30,6 @@ Progress: [██████████] 100%
 | 1. Spec Reading & Synthesis | 2/2 ✓ | 7 min | 3.5 min |
 | 2. Pipeline Automation | 3/3 ✓ | 6 min | 2 min |
 | 3. Brownfield & Validation | 2/2 ✓ | 4 min | 2 min |
-
 | 4. Multi-Runtime & Polish | 2/2 ✓ | 5 min | 2.5 min |
 
 **Recent Trend:**

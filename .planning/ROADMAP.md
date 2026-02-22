@@ -20,7 +20,7 @@ See MILESTONES.md for details.
 
 **Milestone Goal:** One command to batch-plan all roadmap phases with zero interaction.
 
-- [ ] **Phase 5: Command & Phase Discovery** - Slash command that parses ROADMAP.md and identifies all unplanned phases
+- [x] **Phase 5: Command & Phase Discovery** - Slash command that parses ROADMAP.md and identifies all unplanned phases (completed 2026-02-22)
 - [ ] **Phase 6: Sequential Planning Loop** - Core orchestration that plans each phase in order, commits, and reports progress
 - [ ] **Phase 7: Retry & Completion** - Auto-retry on checker failures and clean completion state
 
@@ -35,7 +35,7 @@ See MILESTONES.md for details.
   2. The command file follows GSD conventions (YAML frontmatter, agent reference, tool grants)
   3. The workflow reads ROADMAP.md and correctly identifies all unplanned phases by phase number
   4. If no unplanned phases exist, the user sees a clear "nothing to plan" message
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 05-01-PLAN.md — CLI tooling: roadmap unplanned subcommand + init plan-all + tests
@@ -71,6 +71,6 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 1-4 | v1.0 | 9/9 | Complete | 2026-02-22 |
-| 5. Command & Phase Discovery | v2.0 | 0/? | Not started | - |
+| 5. Command & Phase Discovery | v2.0 | Complete    | 2026-02-22 | - |
 | 6. Sequential Planning Loop | v2.0 | 0/? | Not started | - |
 | 7. Retry & Completion | v2.0 | 0/? | Not started | - |

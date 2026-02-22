@@ -30,14 +30,14 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **PIPE-04**: Workflow always runs research phase (4 parallel researchers + synthesizer)
 - [x] **PIPE-05**: Workflow generates REQUIREMENTS.md with domain-specific categories and REQ-IDs
 - [x] **PIPE-06**: Workflow spawns roadmapper to generate ROADMAP.md and STATE.md
-- [ ] **PIPE-07**: Workflow validates spec assumptions against research findings and surfaces contradictions
+- [x] **PIPE-07**: Workflow validates spec assumptions against research findings and surfaces contradictions
 - [x] **PIPE-08**: No approval gates — all artifacts committed automatically
 - [x] **PIPE-09**: Requirements include full traceability (each requirement mapped to a phase)
 
 ### Brownfield Support
 
-- [ ] **BRWN-01**: Workflow detects existing code and offers codebase mapping before initialization
-- [ ] **BRWN-02**: Existing codebase capabilities become Validated requirements in PROJECT.md
+- [x] **BRWN-01**: Workflow detects existing code and offers codebase mapping before initialization
+- [x] **BRWN-02**: Existing codebase capabilities become Validated requirements in PROJECT.md
 
 ## v2 Requirements
 
@@ -85,11 +85,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PIPE-04 | Phase 2 | Complete |
 | PIPE-05 | Phase 2 | Complete |
 | PIPE-06 | Phase 2 | Complete |
-| PIPE-07 | Phase 3 | Pending |
+| PIPE-07 | Phase 3 | Complete |
 | PIPE-08 | Phase 2 | Complete |
 | PIPE-09 | Phase 2 | Complete |
-| BRWN-01 | Phase 3 | Pending |
-| BRWN-02 | Phase 3 | Pending |
+| BRWN-01 | Phase 3 | Complete |
+| BRWN-02 | Phase 3 | Complete |
 
 **Coverage:**
 - v1 requirements: 20 total
@@ -98,4 +98,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-21*
-*Last updated: 2026-02-22 after Phase 2 completion*
+*Last updated: 2026-02-22 after Phase 3 completion*

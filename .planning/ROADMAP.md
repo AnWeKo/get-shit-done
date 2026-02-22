@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Spec Reading & Synthesis** - Command entry point that reads spec files and produces PROJECT.md
 - [x] **Phase 2: Pipeline Automation** - Wire full artifact generation: config, research, requirements, roadmap, auto-commit
-- [ ] **Phase 3: Brownfield & Validation** - Existing codebase detection and spec-vs-research validation
+- [x] **Phase 3: Brownfield & Validation** - Existing codebase detection and spec-vs-research validation
 - [ ] **Phase 4: Multi-Runtime & Polish** - Cross-runtime compatibility and edge case handling
 
 ## Phase Details

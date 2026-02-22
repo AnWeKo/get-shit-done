@@ -60,11 +60,11 @@ Plans:
   1. When run in a directory with existing code, the workflow detects the codebase and offers mapping before initialization
   2. Existing codebase capabilities appear as Validated requirements in the generated PROJECT.md
   3. Research findings that contradict spec assumptions are surfaced to the user with specific references to the conflicting spec content
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md — Brownfield codebase detection & capability merging (BRWN-01, BRWN-02)
+- [ ] 03-02-PLAN.md — Spec-vs-research validation & contradiction surfacing (PIPE-07)
 
 ### Phase 4: Multi-Runtime & Polish
 **Goal**: The command works reliably across all supported runtimes and handles edge cases gracefully

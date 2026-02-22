@@ -546,6 +546,54 @@ function cmdInitMilestoneOp(cwd, raw) {
   output(result, raw);
 }
 
+function cmdInitPlanAll(cwd, raw) {
+  const config = loadConfig(cwd);
+  const { analyzeRoadmapInternal } = require('./roadmap.cjs');
+
+  const result = {
+    // Config flags
+    research_enabled: config.research,
+    plan_checker_enabled: config.plan_checker,
+    commit_docs: config.commit_docs,
+
+    // Environment
+    planning_exists: pathExistsInternal(cwd, '.planning'),
+    roadmap_exists: pathExistsInternal(cwd, '.planning/ROADMAP.md'),
+
+    // File paths
+    state_path: '.planning/STATE.md',
+    roadmap_path: '.planning/ROADMAP.md',
+    requirements_path: '.planning/REQUIREMENTS.md',
+  };
+
+  // Get unplanned phases by reusing roadmap analysis logic
+  const analysis = analyzeRoadmapInternal(cwd);
+
+  if (analysis.error) {
+    result.unplanned_phases = [];
+    result.unplanned_count = 0;
+    result.total_phases = 0;
+    result.error = analysis.error;
+  } else {
+    const unplanned = analysis.phases
+      .filter(p => p.plan_count === 0 && !p.roadmap_complete)
+      .map(p => ({
+        number: p.number,
+        name: p.name,
+        goal: p.goal,
+        disk_status: p.disk_status,
+        has_context: p.has_context,
+        has_research: p.has_research,
+      }));
+
+    result.unplanned_phases = unplanned;
+    result.unplanned_count = unplanned.length;
+    result.total_phases = analysis.phase_count;
+  }
+
+  output(result, raw);
+}
+
 function cmdInitMapCodebase(cwd, raw) {
   const config = loadConfig(cwd);
 
@@ -681,6 +729,7 @@ function cmdInitProgress(cwd, raw) {
 module.exports = {
   cmdInitExecutePhase,
   cmdInitPlanPhase,
+  cmdInitPlanAll,
   cmdInitNewProject,
   cmdInitNewMilestone,
   cmdInitQuick,

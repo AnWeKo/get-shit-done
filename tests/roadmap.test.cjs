@@ -260,6 +260,146 @@ describe('roadmap analyze command', () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+// roadmap unplanned command
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('roadmap unplanned command', () => {
+  let tmpDir;
+
+  beforeEach(() => {
+    tmpDir = createTempProject();
+  });
+
+  afterEach(() => {
+    cleanup(tmpDir);
+  });
+
+  test('returns unplanned phases', () => {
+    fs.writeFileSync(
+      path.join(tmpDir, '.planning', 'ROADMAP.md'),
+      `# Roadmap v1.0
+
+### Phase 1: Foundation
+**Goal:** Set up infrastructure
+
+### Phase 2: Authentication
+**Goal:** Add user auth
+
+### Phase 3: Features
+**Goal:** Build core features
+`
+    );
+
+    // Phase 1 has a plan on disk
+    const p1 = path.join(tmpDir, '.planning', 'phases', '01-foundation');
+    fs.mkdirSync(p1, { recursive: true });
+    fs.writeFileSync(path.join(p1, '01-01-PLAN.md'), '# Plan');
+
+    const result = runGsdTools('roadmap unplanned', tmpDir);
+    assert.ok(result.success, `Command failed: ${result.error}`);
+
+    const output = JSON.parse(result.output);
+    assert.strictEqual(output.count, 2, 'should find 2 unplanned phases');
+    assert.strictEqual(output.total_phases, 3, 'total phases should be 3');
+    assert.strictEqual(output.unplanned[0].number, '2', 'first unplanned is phase 2');
+    assert.strictEqual(output.unplanned[1].number, '3', 'second unplanned is phase 3');
+  });
+
+  test('excludes completed phases', () => {
+    fs.writeFileSync(
+      path.join(tmpDir, '.planning', 'ROADMAP.md'),
+      `# Roadmap v1.0
+
+## Phases
+
+- [x] **Phase 1: Foundation** - Set up project (completed 2026-01-01)
+- [ ] **Phase 2: API** - Build REST API
+
+### Phase 1: Foundation
+**Goal:** Set up infrastructure
+
+### Phase 2: API
+**Goal:** Build REST API
+`
+    );
+
+    // Phase 1 has no plan files but is checkbox-marked complete
+    const result = runGsdTools('roadmap unplanned', tmpDir);
+    assert.ok(result.success, `Command failed: ${result.error}`);
+
+    const output = JSON.parse(result.output);
+    const phaseNumbers = output.unplanned.map(p => p.number);
+    assert.ok(!phaseNumbers.includes('1'), 'completed phase 1 should NOT be in unplanned list');
+    assert.ok(phaseNumbers.includes('2'), 'phase 2 should be in unplanned list');
+  });
+
+  test('includes phases with context but no plans', () => {
+    fs.writeFileSync(
+      path.join(tmpDir, '.planning', 'ROADMAP.md'),
+      `# Roadmap v1.0
+
+### Phase 1: Foundation
+**Goal:** Set up infrastructure
+`
+    );
+
+    // Phase 1 has CONTEXT.md but no PLAN.md
+    const p1 = path.join(tmpDir, '.planning', 'phases', '01-foundation');
+    fs.mkdirSync(p1, { recursive: true });
+    fs.writeFileSync(path.join(p1, '01-CONTEXT.md'), '# Context');
+
+    const result = runGsdTools('roadmap unplanned', tmpDir);
+    assert.ok(result.success, `Command failed: ${result.error}`);
+
+    const output = JSON.parse(result.output);
+    assert.strictEqual(output.count, 1, 'should find 1 unplanned phase');
+    assert.strictEqual(output.unplanned[0].number, '1', 'phase 1 is unplanned');
+    assert.strictEqual(output.unplanned[0].disk_status, 'discussed', 'disk status should be discussed');
+    assert.strictEqual(output.unplanned[0].has_context, true, 'has_context should be true');
+  });
+
+  test('returns empty list when all phases planned', () => {
+    fs.writeFileSync(
+      path.join(tmpDir, '.planning', 'ROADMAP.md'),
+      `# Roadmap v1.0
+
+### Phase 1: Foundation
+**Goal:** Set up infrastructure
+
+### Phase 2: API
+**Goal:** Build REST API
+`
+    );
+
+    // Both phases have plan files
+    const p1 = path.join(tmpDir, '.planning', 'phases', '01-foundation');
+    fs.mkdirSync(p1, { recursive: true });
+    fs.writeFileSync(path.join(p1, '01-01-PLAN.md'), '# Plan');
+
+    const p2 = path.join(tmpDir, '.planning', 'phases', '02-api');
+    fs.mkdirSync(p2, { recursive: true });
+    fs.writeFileSync(path.join(p2, '02-01-PLAN.md'), '# Plan');
+
+    const result = runGsdTools('roadmap unplanned', tmpDir);
+    assert.ok(result.success, `Command failed: ${result.error}`);
+
+    const output = JSON.parse(result.output);
+    assert.strictEqual(output.count, 0, 'should find 0 unplanned phases');
+    assert.deepStrictEqual(output.unplanned, [], 'unplanned should be empty array');
+  });
+
+  test('handles missing ROADMAP.md', () => {
+    const result = runGsdTools('roadmap unplanned', tmpDir);
+    assert.ok(result.success, `Command failed: ${result.error}`);
+
+    const output = JSON.parse(result.output);
+    assert.strictEqual(output.error, 'ROADMAP.md not found', 'should report error');
+    assert.strictEqual(output.count, 0, 'count should be 0');
+    assert.deepStrictEqual(output.unplanned, [], 'unplanned should be empty');
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // phase add command
 // ─────────────────────────────────────────────────────────────────────────────
 

@@ -65,7 +65,10 @@ Plans:
   2. Retries are capped at 3 attempts per phase (matching existing plan-phase behavior)
   3. If retries are exhausted, the best available plan is committed and the workflow continues to the next phase (does not abort)
   4. On completion, STATE.md reflects all phases planned with status ready for execution
-**Plans**: TBD
+**Plans:** 1 plan
+
+Plans:
+- [ ] 07-01-PLAN.md — Batch-mode retry handling and clean completion state
 
 ## Progress
 
@@ -76,4 +79,4 @@ Plans:
 | 1-4 | v1.0 | 9/9 | Complete | 2026-02-22 |
 | 5. Command & Phase Discovery | v2.0 | Complete    | 2026-02-22 | - |
 | 6. Sequential Planning Loop | v2.0 | 1/1 | Complete | 2026-02-22 |
-| 7. Retry & Completion | v2.0 | 0/? | Not started | - |
+| 7. Retry & Completion | v2.0 | 0/1 | Planned | - |

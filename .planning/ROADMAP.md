@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Spec Reading & Synthesis** - Command entry point that reads spec files and produces PROJECT.md
 - [x] **Phase 2: Pipeline Automation** - Wire full artifact generation: config, research, requirements, roadmap, auto-commit
 - [x] **Phase 3: Brownfield & Validation** - Existing codebase detection and spec-vs-research validation
-- [ ] **Phase 4: Multi-Runtime & Polish** - Cross-runtime compatibility and edge case handling
+- [x] **Phase 4: Multi-Runtime & Polish** - Cross-runtime compatibility and edge case handling
 
 ## Phase Details
 
@@ -78,7 +78,7 @@ Plans:
 
 Plans:
 - [x] 04-01-PLAN.md — Large spec folder resilience & edge case handling (content budgeting, priority tiers, empty/encoding edge cases)
-- [ ] 04-02-PLAN.md — Cross-runtime verification & E2E test fixture (installer output checks, test fixture, automated tests)
+- [x] 04-02-PLAN.md — Cross-runtime verification & E2E test fixture (installer output checks, test fixture, automated tests)
 
 ## Progress
 
@@ -90,4 +90,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Spec Reading & Synthesis | 2/2 | Complete | 2026-02-21 |
 | 2. Pipeline Automation | 3/3 | Complete | 2026-02-22 |
 | 3. Brownfield & Validation | 2/2 | Complete | 2026-02-22 |
-| 4. Multi-Runtime & Polish | 1/2 | In progress | - |
+| 4. Multi-Runtime & Polish | 2/2 | Complete | 2026-02-22 |

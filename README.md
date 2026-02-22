@@ -197,6 +197,27 @@ You approve the roadmap. Now you're ready to build.
 
 **Creates:** `PROJECT.md`, `REQUIREMENTS.md`, `ROADMAP.md`, `STATE.md`, `.planning/research/`
 
+#### Alternative: Initialize from Spec Files
+
+```
+/gsd:new-project-from-spec [path/to/specs/]
+```
+
+**Already have a design doc, PRD, or technical spec?** Skip the interactive questioning entirely. Point GSD at a folder of markdown files and it produces the same output — fully automated.
+
+The system:
+
+1. **Reads** — Scans all markdown files in the spec folder (default: `./specs/`)
+2. **Classifies** — Assigns each file a semantic role (9 categories: vision, requirements, technical, UX, etc.)
+3. **Synthesizes** — Merges specs into PROJECT.md, detecting major/minor contradictions across files
+4. **Extracts config** — Infers preferences (mode, depth, model profile) from spec prose
+5. **Researches** — Spawns 4 parallel research agents, same as interactive flow
+6. **Plans** — Generates requirements with REQ-IDs, then creates a phased roadmap
+
+Handles large spec folders with content budgeting (100KB threshold) and supports brownfield projects — if you have an existing codebase, it detects capabilities and merges them into the planning artifacts.
+
+**Creates:** Same artifacts as `/gsd:new-project` — `PROJECT.md`, `config.json`, `research/`, `REQUIREMENTS.md`, `ROADMAP.md`, `STATE.md`
+
 ---
 
 ### 2. Discuss Phase
@@ -456,6 +477,7 @@ You're never locked in. The system adapts.
 | Command | What it does |
 |---------|--------------|
 | `/gsd:new-project [--auto]` | Full initialization: questions → research → requirements → roadmap |
+| `/gsd:new-project-from-spec [path]` | Spec-based initialization: reads markdown specs → same output, no questions |
 | `/gsd:discuss-phase [N] [--auto]` | Capture implementation decisions before planning |
 | `/gsd:plan-phase [N] [--auto]` | Research + plan + verify for a phase |
 | `/gsd:execute-phase <N>` | Execute all plans in parallel waves, verify when complete |

@@ -1,11 +1,16 @@
 <purpose>
-Initialize a project from spec files. Reads markdown specs from a folder, classifies each file's role, detects contradictions and gaps, synthesizes PROJECT.md. This is the spec-driven alternative to the interactive questioning flow in `new-project.md`.
+Initialize a project from spec files — full pipeline from reading specs to committed planning artifacts. Reads markdown specs from a folder, classifies each file's role, detects contradictions and gaps, synthesizes PROJECT.md, extracts config preferences, runs domain research, generates requirements, creates roadmap, and commits everything atomically. This is the spec-driven alternative to the interactive questioning flow in `new-project.md`.
 
 Instead of deep interactive questioning, this workflow:
 1. Reads all .md files from a spec folder
 2. Classifies each file by content (PRD, tech spec, user stories, etc.)
 3. Synthesizes a unified PROJECT.md using the project template
 4. Detects contradictions and gaps, asking the user only when critical
+5. Extracts config preferences from spec prose (or asks user)
+6. Runs 4 parallel domain researchers + synthesizer
+7. Generates REQUIREMENTS.md with REQ-IDs and traceability
+8. Creates ROADMAP.md and STATE.md via roadmapper agent
+9. Commits all artifacts atomically
 
 Same output format as `/gsd:new-project` — downstream tools work unchanged.
 </purpose>
@@ -970,11 +975,98 @@ Write files first, then return. This ensures artifacts persist even if context i
 
 **Do NOT commit yet** — atomic commit in Step 13.
 
+## 13. Commit and Done
+
+### 13a. Atomic Commit of All Artifacts
+
+Check conditions before committing:
+
+**If `has_git` is false** (from init JSON in Step 1):
+```
+⚠ No git repo detected. Artifacts generated but not committed.
+Run `git init` and commit manually.
+```
+Skip commit, proceed to 13b.
+
+**If `commit_docs` is false** (from config.json):
+```
+Artifacts generated but not committed (commit_docs: false in config).
+```
+Skip commit, proceed to 13b.
+
+**Otherwise — commit everything in one atomic commit:**
+
+```bash
+node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: initialize project planning from spec files" --files .planning/PROJECT.md .planning/config.json .planning/research/STACK.md .planning/research/FEATURES.md .planning/research/ARCHITECTURE.md .planning/research/PITFALLS.md .planning/research/SUMMARY.md .planning/REQUIREMENTS.md .planning/ROADMAP.md .planning/STATE.md
+```
+
+**If `.planning/spec-references/` exists** (from Step 7 — supplementary content preserved from specs):
+Include those files in the commit too. List each file in `.planning/spec-references/` and add to the `--files` argument.
+
+### 13b. Display Completion Summary
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ GSD ► PROJECT INITIALIZED ✓
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+**[Project Name]** (from spec files)
+
+Created 6 artifacts:
+
+| Artifact       | Location                    |
+|----------------|-----------------------------|
+| Project        | `.planning/PROJECT.md`      |
+| Config         | `.planning/config.json`     |
+| Research       | `.planning/research/`       |
+| Requirements   | `.planning/REQUIREMENTS.md` |
+| Roadmap        | `.planning/ROADMAP.md`      |
+| State          | `.planning/STATE.md`        |
+
+**Source:** {N} spec files from {SPEC_PATH}
+**Phases:** {N} (from ROADMAP.md)
+**Requirements:** {N} v1 requirements mapped
+**Conflicts resolved:** {N} (or "None")
+**Research dimensions:** 4 (Stack, Features, Architecture, Pitfalls)
+```
+
+If `.planning/spec-references/` was created, include an additional row:
+
+```
+| Spec References | `.planning/spec-references/` |
+```
+
+### 13c. Next Steps
+
+```
+───────────────────────────────────────────────────────────────
+
+## ▶ Next Up
+
+**Phase 1: [Phase Name]** — [Goal from ROADMAP.md]
+
+/gsd-discuss-phase 1 — gather context and clarify approach
+
+<sub>/clear first → fresh context window</sub>
+
+───────────────────────────────────────────────────────────────
+```
+
 </process>
 
 <output>
 
 - `.planning/PROJECT.md` — project context synthesized from spec files
+- `.planning/config.json` — workflow config (mode, depth, model profile, etc.)
+- `.planning/research/` — domain research outputs
+  - `STACK.md` — tech stack recommendations
+  - `FEATURES.md` — feature analysis (table stakes vs differentiators)
+  - `ARCHITECTURE.md` — system architecture patterns
+  - `PITFALLS.md` — common mistakes and prevention strategies
+  - `SUMMARY.md` — synthesized research findings
+- `.planning/REQUIREMENTS.md` — v1 requirements with REQ-IDs and traceability
+- `.planning/ROADMAP.md` — phased execution plan with requirement mappings
+- `.planning/STATE.md` — project state for session continuity
 - `.planning/spec-references/` — supplementary content preserved from specs (if any)
 
 </output>
@@ -991,6 +1083,12 @@ Write files first, then return. This ensures artifacts persist even if context i
 - [ ] Supplementary content preserved in spec-references/
 - [ ] Key Decisions imported from specs, risky ones flagged
 - [ ] PROJECT.md committed to git
-- [ ] User knows Phase 2 adds pipeline automation
+- [ ] config.json generated with inferred + user-confirmed values
+- [ ] Research executed (4 parallel researchers + synthesizer)
+- [ ] REQUIREMENTS.md generated with REQ-IDs, categories, and spec-source traceability
+- [ ] ROADMAP.md and STATE.md created by roadmapper
+- [ ] REQUIREMENTS.md traceability updated with phase assignments
+- [ ] All artifacts committed atomically (or skip message shown if no git / commit_docs=false)
+- [ ] User knows next step is `/gsd-discuss-phase 1`
 
 </success_criteria>

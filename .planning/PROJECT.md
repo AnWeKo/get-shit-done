@@ -1,12 +1,12 @@
-# GSD: Spec-Based Project Initialization
+# GSD: Batch Phase Planning
 
 ## What This Is
 
-A workflow for the Get Shit Done (GSD) meta-prompting system that initializes projects automatically from specification files. The `/gsd-new-project-from-spec` command reads markdown spec files from a folder, extracts all project context, and drives the full pipeline (PROJECT.md → config.json → research → REQUIREMENTS.md → ROADMAP.md → STATE.md) with minimal user interaction. Supports both greenfield and brownfield codebases, validates spec assumptions against research findings, and handles large spec folders gracefully.
+A `/gsd-plan-all` command for the Get Shit Done (GSD) meta-prompting system that automatically generates execution plans for every phase in a roadmap with zero user interaction. Reads ROADMAP.md and REQUIREMENTS.md, plans each phase sequentially (so later phases can reference earlier plans), honors config.json for research and plan-checking, auto-retries when the plan-checker flags issues, and commits each plan as it's created. Optional `--auto-exec` parameter continues into phase 1 execution after all plans are ready.
 
 ## Core Value
 
-Fully automated project initialization from spec files — the user provides specs, GSD produces a complete planning structure ready for `/gsd-plan-phase 1` without interactive questioning.
+One command to go from roadmap to fully planned phases — no manual phase-by-phase planning, no approval gates, no interaction.
 
 ## Requirements
 
@@ -35,9 +35,27 @@ Fully automated project initialization from spec files — the user provides spe
 - ✓ Content budgeting for large spec folders (100KB threshold) — v1.0
 - ✓ Spec-vs-research validation with contradiction surfacing — v1.0
 
+## Current Milestone: v2.0 Batch Phase Planning
+
+**Goal:** Automated batch planning of all roadmap phases via a single `/gsd-plan-all` command.
+
+**Target features:**
+- `/gsd-plan-all` command that reads ROADMAP.md and plans every phase automatically
+- Sequential planning (phase N plan available as context for phase N+1)
+- Config-aware: honors workflow.research and workflow.plan_check settings
+- Auto-retry on plan-checker failures with checker feedback
+- Atomic commits per phase plan
+- Optional `--auto-exec` parameter to kick off phase 1 execution after planning
+- Cross-runtime compatibility (Claude Code, OpenCode, Gemini CLI)
+
 ### Active
 
-(None — next milestone requirements to be defined via `/gsd-new-milestone`)
+- [ ] `/gsd-plan-all` command with batch planning workflow
+- [ ] Sequential phase planning with cross-phase context
+- [ ] Config-driven research and plan-check behavior
+- [ ] Auto-retry on plan-checker failures
+- [ ] Optional `--auto-exec` parameter
+- [ ] Cross-runtime compatibility
 
 ### Out of Scope
 
@@ -88,4 +106,4 @@ Key deliverables:
 - **Git identity**: Git user must be configured for commits to work
 
 ---
-*Last updated: 2026-02-22 after v1.0 milestone*
+*Last updated: 2026-02-22 after v2.0 milestone started*

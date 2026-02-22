@@ -9,9 +9,9 @@ Requirements for `/gsd-plan-all` batch planning command.
 
 ### Command
 
-- [ ] **CMD-01**: User can invoke `/gsd-plan-all` to batch-plan all phases in the current roadmap
-- [ ] **CMD-02**: Command file follows existing GSD slash command conventions (YAML frontmatter, agent, tools)
-- [ ] **CMD-03**: Command works across all supported runtimes (Claude Code, OpenCode, Gemini CLI)
+- [x] **CMD-01**: User can invoke `/gsd-plan-all` to batch-plan all phases in the current roadmap
+- [x] **CMD-02**: Command file follows existing GSD slash command conventions (YAML frontmatter, agent, tools)
+- [x] **CMD-03**: Command works across all supported runtimes (Claude Code, OpenCode, Gemini CLI)
 
 ### Orchestration
 
@@ -57,9 +57,9 @@ Requirements for `/gsd-plan-all` batch planning command.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CMD-01 | Phase 5 | Pending |
-| CMD-02 | Phase 5 | Pending |
-| CMD-03 | Phase 5 | Pending |
+| CMD-01 | Phase 5 | Complete |
+| CMD-02 | Phase 5 | Complete |
+| CMD-03 | Phase 5 | Complete |
 | ORCH-01 | Phase 5 | Complete |
 | ORCH-02 | Phase 6 | Pending |
 | ORCH-03 | Phase 6 | Pending |

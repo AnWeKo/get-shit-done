@@ -5,32 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Fully automated project initialization from spec files — user provides specs, GSD produces complete planning structure ready for execution
-**Current focus:** Phase 2: Pipeline Automation (Phase 1 complete)
+**Current focus:** Phase 2: Pipeline Automation — config extraction and model resolution done
 
 ## Current Position
 
-Phase: 1 of 4 (Spec Reading & Synthesis) — COMPLETE
-Plan: 2 of 2 in current phase
-Status: Phase complete
-Last activity: 2026-02-21 — Completed 01-02-PLAN.md
+Phase: 2 of 4 (Pipeline Automation)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-22 — Completed 02-01-PLAN.md
 
-Progress: [██░░░░░░░░] 22%
+Progress: [███░░░░░░░] 33%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 3.5 min
-- Total execution time: 0.12 hours
+- Total plans completed: 3
+- Average duration: 3 min
+- Total execution time: 0.15 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Spec Reading & Synthesis | 2/2 ✓ | 7 min | 3.5 min |
+| 2. Pipeline Automation | 1/3 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2 min), 01-02 (5 min)
+- Last 5 plans: 01-01 (2 min), 01-02 (5 min), 02-01 (2 min)
 - Trend: —
 
 *Updated after each plan completion*
@@ -52,6 +53,10 @@ Recent decisions affecting current work:
 - [01-02]: All conflict/gap questions batched with file+quote citations
 - [01-02]: INFERABLE assumptions documented in Key Decisions with ⚠️ Revisit flag
 - [01-02]: Supplementary content preserved in .planning/spec-references/
+- [02-01]: workflow.research always true for spec-from-file flow (research validates spec assumptions)
+- [02-01]: Conservative inference: ambiguous signals default to asking user, not guessing
+- [02-01]: Per-value AskUserQuestion choices for config confirmation
+- [02-01]: No commit in config step — deferred to Plan 03 atomic commit
 
 ### Pending Todos
 
@@ -63,6 +68,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-21T22:25:00Z
-Stopped at: Completed 01-02-PLAN.md — Phase 1 complete
+Last session: 2026-02-22T08:21:00Z
+Stopped at: Completed 02-01-PLAN.md
 Resume file: None

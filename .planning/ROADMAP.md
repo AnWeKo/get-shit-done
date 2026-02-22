@@ -48,7 +48,7 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Config extraction from spec prose (inference, citations, per-value choices, config.json generation)
+- [x] 02-01-PLAN.md — Config extraction from spec prose (inference, citations, per-value choices, config.json generation)
 - [ ] 02-02-PLAN.md — Research execution & requirements generation (4 parallel researchers, REQUIREMENTS.md with REQ-IDs)
 - [ ] 02-03-PLAN.md — Roadmap generation, atomic commit & completion (roadmapper, auto-commit all artifacts, summary)
 
@@ -88,6 +88,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Spec Reading & Synthesis | 2/2 | Complete | 2026-02-21 |
-| 2. Pipeline Automation | 0/3 | Not started | - |
+| 2. Pipeline Automation | 1/3 | In progress | - |
 | 3. Brownfield & Validation | 0/2 | Not started | - |
 | 4. Multi-Runtime & Polish | 0/2 | Not started | - |

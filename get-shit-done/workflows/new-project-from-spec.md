@@ -926,6 +926,106 @@ Research complete. Findings in .planning/research/
 
 **Do NOT commit** — all artifacts will be committed in one atomic commit at the end of the pipeline (Plan 03).
 
+### 10f. Compare Spec Assumptions Against Research Findings
+
+Read and cross-reference:
+- `.planning/PROJECT.md` (spec-derived assumptions — tech choices, architecture, constraints, key decisions)
+- `.planning/research/SUMMARY.md` (synthesized research findings)
+- `.planning/research/STACK.md` (tech stack recommendations)
+- `.planning/research/ARCHITECTURE.md` (architecture patterns)
+- `.planning/research/PITFALLS.md` (common mistakes)
+
+Identify contradictions across four categories:
+
+1. **Tech choice conflicts** — spec specifies a technology, research recommends something different
+2. **Deprecated/risky dependencies** — spec assumes a library or tool that research flags as deprecated, unmaintained, or risky
+3. **Architectural mismatches** — spec describes an architecture, research shows a different pattern is standard/better for the domain
+4. **Feasibility concerns** — spec assumes something is straightforward, research indicates significant complexity or impossibility
+
+For each contradiction found:
+- Extract the **spec quote** (specific text from PROJECT.md with `<!-- from: file.md -->` attribution)
+- Extract the **research finding** (specific text from research files)
+- Classify as **major** or **minor** using both factors:
+  - **Major:** High impact (architecture/core tech) AND high research confidence (strong contradiction, not just a defensible alternative) → blocks pipeline
+  - **Minor:** Low impact OR low confidence (research suggests alternative but spec choice is defensible) → noted but doesn't block
+
+### 10g. Surface Contradictions
+
+**If no contradictions found:** Continue silently to Step 11.
+
+**If only minor contradictions found:**
+- Display: `Research found {N} minor note(s) about your spec assumptions (non-blocking).`
+- Add each minor contradiction as a flag in PROJECT.md Key Decisions table:
+  - Decision: the spec assumption
+  - Rationale: `Research disagrees: {research finding}` with `<!-- from: research/STACK.md -->` (or whichever research file) attribution
+  - Outcome: `⚠️ Revisit`
+- Continue to Step 11 without blocking.
+
+**If major contradictions found:**
+
+Display grouped summary:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ GSD ► VALIDATING SPECS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Research found {N} contradiction(s) with your specs:
+```
+
+For each major contradiction, present with AskUserQuestion:
+- header: "Spec Contradiction {N}/{total}"
+- question: Show spec quote + research finding side by side:
+  ```
+  **Your spec says:** "{spec quote}" (from {spec-file.md})
+  **Research found:** "{research finding}" (from research/{file}.md)
+  ```
+- options:
+  - "Keep spec" — Use the spec assumption as-is
+  - "Accept research" — Use the research recommendation instead
+  - "Custom" — Provide your own resolution
+
+**If "Custom":** Use AskUserQuestion with freeform text input to get the user's custom resolution:
+- header: "Custom Resolution"
+- question: "Enter your resolution for this contradiction:"
+
+### 10h. Apply Resolutions
+
+For each resolved major contradiction:
+
+**"Keep spec":**
+- Add to PROJECT.md Key Decisions table:
+  - Decision: the spec assumption
+  - Rationale: `Kept despite research disagreement: {research finding}`
+  - Outcome: `— Confirmed`
+
+**"Accept research":**
+- Update PROJECT.md to replace the spec assumption with the research recommendation
+- Update the Key Decisions table:
+  - Decision: the new research-based choice
+  - Rationale: `Changed from spec ({original}) based on research: {finding}`
+  - Outcome: `— Updated`
+- If this changes a requirement in the Active list, update the requirement text to reflect the new choice
+
+**"Custom":**
+- Update PROJECT.md with the user's custom answer replacing the original spec assumption
+- Update the Key Decisions table:
+  - Decision: the custom choice
+  - Rationale: `Custom resolution (spec: {original}, research: {finding})`
+  - Outcome: `— Custom`
+- If this changes a requirement, update the requirement text
+
+After all resolutions applied:
+```
+{N} contradiction(s) resolved. Continuing to requirements...
+```
+
+Also add minor contradictions as flags (same as the minor-only path above).
+
+**IMPORTANT:** The existing decision from Phase 2 still applies: "Research findings inform only — requirements come from specs. Research shapes HOW requirements are written, not WHAT they are." Contradiction surfacing EXTENDS this: research can now CHALLENGE spec assumptions, but only through explicit user resolution (not silently).
+
+Continue to Step 11.
+
 ## 11. Generate Requirements
 
 **Display progress:**

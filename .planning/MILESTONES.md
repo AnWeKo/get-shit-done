@@ -27,3 +27,30 @@
 **What's next:** To be defined via `/gsd-new-milestone`
 
 ---
+
+## v2.0 Batch Phase Planning (Shipped: 2026-02-22)
+
+**Delivered:** One command to batch-plan all roadmap phases with zero interaction — `/gsd-plan-all` discovers unplanned phases, plans each sequentially, retries on checker failures, and leaves STATE.md ready for execution.
+
+**Phases completed:** 5-7 (4 plans total)
+
+**Key accomplishments:**
+
+- Created `/gsd-plan-all` slash command with `roadmap unplanned` and `init plan-all` CLI primitives, discovery workflow with summary table and --dry-run support
+- Sequential planning loop that iterates unplanned phases, spawns plan-phase subagents, commits after each, updates STATE.md, and shows batch progress
+- Batch-mode retry handling via `--batch` flag — auto-skips context prompt, existing plans choice, and retry exhaustion offer for fully autonomous operation
+- Clean completion state: STATE.md reflects "All phases planned — ready for execution" on success, or failure count on partial completion
+
+**Stats:**
+
+- 22 files created/modified
+- 2,559 lines of JavaScript/Markdown
+- 3 phases, 4 plans, 8 tasks
+- 1 day (2026-02-22), ~7 min total execution time
+
+**Git range:** `b4432f7` -> `774845c`
+
+**What's next:** To be defined via `/gsd-new-milestone`
+
+---
+

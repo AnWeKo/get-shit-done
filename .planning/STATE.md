@@ -5,14 +5,13 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** One command to go from roadmap to fully planned phases — no manual phase-by-phase planning, no approval gates, no interaction
-**Current focus:** Phase 7 — Retry & Completion
+**Current focus:** Planning next milestone
 
 ## Current Position
 
-Phase: 7 of 7 (Retry & Completion)
-Plan: 1 of 1 complete
-Status: Phase Complete
-Last activity: 2026-02-22 — Completed 07-01-PLAN.md
+Phase: v2.0 complete
+Status: Milestone shipped
+Last activity: 2026-02-22 — Completed v2.0 Batch Phase Planning milestone
 
 Progress: [██████████] 100%
 
@@ -34,17 +33,8 @@ Progress: [██████████] 100%
 
 ### Decisions
 
-v1.0 decisions logged in PROJECT.md Key Decisions table (12 decisions, all Good).
-
-v2.0 decisions:
-- 3 phases for 13 requirements — tightly coupled workflow, natural boundaries at command/loop/retry
-- Extracted analyzeRoadmapInternal from cmdRoadmapAnalyze for reuse by init plan-all and roadmap unplanned
-- Workflow Step 5 placeholder pattern for Phase 6 extension — HTML comment markers for clear boundary
-- Sequential loop spawns plan-phase as Task subagent per phase — fresh context window for each
-- Failed phases continue the loop and are reported at the end — no abort on failure
-- Batch mode skips existing plans entirely (returns PLANNING COMPLETE) rather than offering replan options
-- Retry exhaustion auto-proceeds silently in batch mode — no user prompt, no abort
-- STATE.md completion status differentiates success (ready for execution) from partial failure (N failed)
+v1.0 decisions: 12 decisions, all Good (see PROJECT.md Key Decisions table).
+v2.0 decisions: 5 decisions, all Good (see PROJECT.md Key Decisions table).
 
 ### Pending Todos
 
@@ -57,5 +47,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 07-01-PLAN.md (Phase 7 complete — v2.0 milestone complete)
-Resume with: `/gsd-complete-milestone`
+Stopped at: v2.0 milestone complete
+Resume with: `/gsd-new-milestone`

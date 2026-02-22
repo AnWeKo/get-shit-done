@@ -5,33 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Fully automated project initialization from spec files — user provides specs, GSD produces complete planning structure ready for execution
-**Current focus:** Phase 2: Pipeline Automation — config, research, and requirements steps done
+**Current focus:** Phase 2 complete — full pipeline workflow finished. Ready for Phase 3: Brownfield & Validation
 
 ## Current Position
 
 Phase: 2 of 4 (Pipeline Automation)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-22 — Completed 02-02-PLAN.md
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-02-22 — Completed 02-03-PLAN.md
 
-Progress: [████░░░░░░] 44%
+Progress: [█████░░░░░] 56%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
+- Total plans completed: 5
 - Average duration: 3 min
-- Total execution time: 0.18 hours
+- Total execution time: 0.20 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Spec Reading & Synthesis | 2/2 ✓ | 7 min | 3.5 min |
-| 2. Pipeline Automation | 2/3 | 4 min | 2 min |
+| 2. Pipeline Automation | 3/3 ✓ | 6 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2 min), 01-02 (5 min), 02-01 (2 min), 02-02 (2 min)
+- Last 5 plans: 01-02 (5 min), 02-01 (2 min), 02-02 (2 min), 02-03 (2 min)
 - Trend: —
 
 *Updated after each plan completion*
@@ -60,6 +60,9 @@ Recent decisions affecting current work:
 - [02-02]: Research topics derived from spec content, not generic questions
 - [02-02]: Requirements come from specs only; research informs wording precision
 - [02-02]: REQ-IDs use [CATEGORY]-[NUMBER] format with domain-specific categories
+- [02-03]: No approval gate after roadmap — spec-from-file flow is fully automated (PIPE-08)
+- [02-03]: Atomic commit includes all 6 artifacts plus spec-references if present
+- [02-03]: commit_docs and has_git conditions checked before committing
 
 ### Pending Todos
 
@@ -71,6 +74,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-22T08:25:46Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-02-22T08:30:30Z
+Stopped at: Completed 02-03-PLAN.md — Phase 2 complete
 Resume file: None

@@ -13,7 +13,7 @@ This project adds a `/gsd-new-project-from-spec` command that reads a folder of 
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Spec Reading & Synthesis** - Command entry point that reads spec files and produces PROJECT.md
-- [ ] **Phase 2: Pipeline Automation** - Wire full artifact generation: config, research, requirements, roadmap, auto-commit
+- [x] **Phase 2: Pipeline Automation** - Wire full artifact generation: config, research, requirements, roadmap, auto-commit
 - [ ] **Phase 3: Brownfield & Validation** - Existing codebase detection and spec-vs-research validation
 - [ ] **Phase 4: Multi-Runtime & Polish** - Cross-runtime compatibility and edge case handling
 
@@ -50,7 +50,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — Config extraction from spec prose (inference, citations, per-value choices, config.json generation)
 - [x] 02-02-PLAN.md — Research execution & requirements generation (4 parallel researchers, REQUIREMENTS.md with REQ-IDs)
-- [ ] 02-03-PLAN.md — Roadmap generation, atomic commit & completion (roadmapper, auto-commit all artifacts, summary)
+- [x] 02-03-PLAN.md — Roadmap generation, atomic commit & completion (roadmapper, auto-commit all artifacts, summary)
 
 ### Phase 3: Brownfield & Validation
 **Goal**: The command correctly handles existing codebases and validates spec assumptions against research findings
@@ -88,6 +88,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Spec Reading & Synthesis | 2/2 | Complete | 2026-02-21 |
-| 2. Pipeline Automation | 2/3 | In progress | - |
+| 2. Pipeline Automation | 3/3 | Complete | 2026-02-22 |
 | 3. Brownfield & Validation | 0/2 | Not started | - |
 | 4. Multi-Runtime & Polish | 0/2 | Not started | - |

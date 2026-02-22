@@ -824,7 +824,100 @@ Research complete. Findings in .planning/research/
 
 **Do NOT commit** — all artifacts will be committed in one atomic commit at the end of the pipeline (Plan 03).
 
-<!-- Steps 11-12 added by Plan 02 and Plan 03 -->
+## 11. Generate Requirements
+
+**Display progress:**
+```
+Generating REQUIREMENTS.md from specs...
+```
+
+**No interactive scoping** — requirements come from specs, not user questioning. No per-category AskUserQuestion loops. No "Any additions?" question. No approval gate.
+
+### 11a. Load Context
+
+Read and internalize:
+- `.planning/PROJECT.md` (synthesized specs from Phase 1 — source of all requirements)
+- `.planning/research/SUMMARY.md` (research findings from Step 10 — informs wording only)
+- `.planning/research/FEATURES.md` (feature categories — informs organization)
+
+### 11b. Derive Requirements from Specs
+
+**Locked decision from CONTEXT.md:** "Research findings inform only — requirements come from specs. Research shapes HOW requirements are written (informed by ecosystem reality), not WHAT they are."
+
+The agent should:
+
+1. **Extract all requirements** from PROJECT.md's Active requirements list (these came from spec synthesis in Phase 1)
+2. **Organize into domain-appropriate categories** (Claude's discretion — can mirror spec structure or create better groupings based on the project domain)
+3. **Assign REQ-IDs** using the format `[CATEGORY]-[NUMBER]` (e.g., AUTH-01, DATA-02, UI-03)
+   - Category prefix should be a short, descriptive abbreviation (3-5 chars)
+   - Numbers are sequential within each category starting at 01
+4. **Make each requirement specific, testable, and user-centric:**
+   - Good: "User can reset password via email link"
+   - Bad: "Handle password reset"
+   - Good: "API responds within 200ms for read operations"
+   - Bad: "Fast API"
+5. **Use research findings to INFORM the wording** — e.g., if research says "JWT is standard for auth", shape the auth requirement to mention JWT if the spec implied token auth. Research makes requirements more precise, but does NOT add new requirements beyond what specs define
+6. **Include traceability:** each requirement notes which spec file(s) it originated from using the HTML comment pattern established in Phase 1: `<!-- from: filename.md -->`
+
+### 11c. Generate REQUIREMENTS.md
+
+Write `.planning/REQUIREMENTS.md` using this structure:
+
+```markdown
+# Requirements: [Project Name]
+
+**Defined:** [date]
+**Core Value:** [from PROJECT.md]
+
+## v1 Requirements
+
+Requirements for initial release. Each maps to roadmap phases.
+
+### [Category 1]
+
+- [ ] **CAT-01**: [Specific, testable requirement] <!-- from: spec-file.md -->
+- [ ] **CAT-02**: [Specific, testable requirement] <!-- from: spec-file.md, other.md -->
+
+### [Category 2]
+
+- [ ] **CAT2-01**: [Requirement] <!-- from: spec-file.md -->
+
+## v2 Requirements
+
+Deferred to future release. Tracked but not in current roadmap.
+
+[Any items from specs marked as future/later/v2, or features that research suggests deferring]
+
+## Out of Scope
+
+Explicitly excluded. Documented to prevent scope creep.
+
+| Feature | Reason |
+|---------|--------|
+| [From PROJECT.md Out of Scope section] | [Reason] |
+
+## Traceability
+
+Which phases cover which requirements. Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| CAT-01 | TBD | Pending |
+| CAT-02 | TBD | Pending |
+
+**Coverage:**
+- v1 requirements: [N] total
+- Mapped to phases: 0 (roadmap not yet created)
+- Unmapped: [N]
+```
+
+### 11d. Traceability Placeholder
+
+The Traceability section starts with all requirements unmapped (Phase = TBD, Status = Pending). Step 12 (Roadmap, Plan 03) will update this table with actual phase assignments — covering PIPE-09.
+
+**Do NOT commit** — all artifacts will be committed in one atomic commit at the end of the pipeline (Plan 03).
+
+<!-- Step 12 added by Plan 03 -->
 
 </process>
 

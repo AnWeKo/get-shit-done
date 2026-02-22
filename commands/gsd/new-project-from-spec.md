@@ -1,6 +1,6 @@
 ---
 name: gsd:new-project-from-spec
-description: Initialize a new project from spec files — reads markdown specs and produces PROJECT.md
+description: Initialize a new project from spec files — reads markdown specs, produces all planning artifacts, and commits automatically
 argument-hint: "[path/to/specs/]"
 allowed-tools:
   - Read
@@ -13,18 +13,23 @@ allowed-tools:
 **Arguments:**
 - Optional path to spec folder (default: `./specs/`). Example: `/gsd:new-project-from-spec ./my-specs/`
 
-This is the spec-driven alternative to the interactive `/gsd:new-project` flow. Instead of deep questioning, it reads markdown spec files from a folder, classifies each file's role, and synthesizes PROJECT.md automatically.
+This is the spec-driven alternative to the interactive `/gsd:new-project` flow. Instead of deep questioning, it reads markdown spec files from a folder, classifies each file's role, synthesizes PROJECT.md, extracts config preferences, runs research, generates requirements, creates a roadmap, and commits everything automatically.
 </context>
 
 <objective>
-Initialize a project by reading spec files from a folder and synthesizing PROJECT.md.
+Initialize a project by reading spec files from a folder and producing all planning artifacts.
 
-Same output as `/gsd:new-project` but with automated spec reading instead of interactive questioning. Creates `.planning/PROJECT.md` (Phase 1 scope). Pipeline automation (config, research, requirements, roadmap) is Phase 2.
+Same output as `/gsd:new-project` but with automated spec reading instead of interactive questioning. Full pipeline: spec reading → classification → synthesis → config extraction → research → requirements → roadmap → atomic commit.
 
 **Creates:**
 - `.planning/PROJECT.md` — project context synthesized from spec files
+- `.planning/config.json` — config preferences inferred from spec prose
+- `.planning/research/` — 4 research dimensions + synthesis (STACK.md, FEATURES.md, ARCHITECTURE.md, PITFALLS.md, SUMMARY.md)
+- `.planning/REQUIREMENTS.md` — domain-specific categories with REQ-IDs and traceability
+- `.planning/ROADMAP.md` — phased execution plan derived from requirements
+- `.planning/STATE.md` — project state tracking
 
-**After this command:** Run `/gsd:plan-phase 1` to start execution.
+**After this command:** Run `/gsd-discuss-phase 1` to gather context before planning.
 </objective>
 
 <execution_context>

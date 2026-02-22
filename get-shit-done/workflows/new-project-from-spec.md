@@ -400,6 +400,22 @@ If unclear, should have been asked in Step 6.]
 
 <!-- Shipped and confirmed valuable. -->
 
+{If `codebase_capabilities` is not empty (brownfield with codebase map):}
+
+Populate with capabilities extracted in Step 3b:
+- ✓ [Existing capability 1] — existing
+- ✓ [Existing capability 2] — existing
+- ✓ [Existing capability 3] — existing
+
+Auto-mark as Validated — no user confirmation needed (CONTEXT.md locked decision).
+
+**Partial overlap handling:** When a spec requirement partially overlaps with existing code, split the requirement — existing part as Validated, missing part as Active (two separate line items). Example:
+- Spec says "JWT auth with social login"
+- Codebase already has "JWT auth with email/password"
+- → Validated: "✓ JWT authentication with email/password — existing"
+- → Active: "[ ] Social login (OAuth) integration"
+
+{If `codebase_capabilities` is empty (greenfield):}
 (None yet — ship to validate)
 
 ### Active
@@ -430,6 +446,17 @@ If unclear, should have been asked in Step 6.]
 Include source attributions for major points.]
 
 See `.planning/spec-references/` for detailed specifications preserved from input docs.
+
+{If `codebase_capabilities` is not empty AND there are capabilities NOT mentioned in specs:}
+
+### Existing Capabilities
+
+The codebase has these capabilities that are not covered by the spec requirements. They exist in the codebase but are not being tracked as project requirements:
+
+- [Capability not in specs 1] — (from codebase map)
+- [Capability not in specs 2] — (from codebase map)
+
+These are noted for awareness but don't create requirements — specs define what we're building.
 
 ## Constraints
 
@@ -692,6 +719,9 @@ Project Research — Stack dimension for [domain derived from specs].
 
 Greenfield: Research the standard stack for building [domain] from scratch.
 Subsequent: Research what's needed to add [target features] to an existing [domain] app. Don't re-research the existing system.
+
+{If codebase_context_files is not empty:}
+Brownfield: Existing codebase uses [summary from STACK.md]. Research should focus on what's NEEDED BEYOND existing capabilities, not re-research the existing system.
 </milestone_context>
 
 <question>
@@ -700,6 +730,9 @@ Subsequent: Research what's needed to add [target features] to an existing [doma
 
 <files_to_read>
 - {project_path} (Project context and goals)
+{If codebase_context_files is not empty:}
+- .planning/codebase/ARCHITECTURE.md (Existing system architecture)
+- .planning/codebase/STACK.md (Existing tech stack)
 </files_to_read>
 
 <downstream_consumer>
@@ -732,6 +765,9 @@ Project Research — Features dimension for [domain derived from specs].
 
 Greenfield: What features do [domain] products have? What's table stakes vs differentiating?
 Subsequent: How do [target features] typically work? What's expected behavior?
+
+{If codebase_context_files is not empty:}
+Brownfield: Existing codebase uses [summary from STACK.md]. Research should focus on what's NEEDED BEYOND existing capabilities, not re-research the existing system.
 </milestone_context>
 
 <question>
@@ -740,6 +776,9 @@ Subsequent: How do [target features] typically work? What's expected behavior?
 
 <files_to_read>
 - {project_path} (Project context)
+{If codebase_context_files is not empty:}
+- .planning/codebase/ARCHITECTURE.md (Existing system architecture)
+- .planning/codebase/STACK.md (Existing tech stack)
 </files_to_read>
 
 <downstream_consumer>
@@ -772,6 +811,9 @@ Project Research — Architecture dimension for [domain derived from specs].
 
 Greenfield: How are [domain] systems typically structured? What are major components?
 Subsequent: How do [target features] integrate with existing [domain] architecture?
+
+{If codebase_context_files is not empty:}
+Brownfield: Existing codebase uses [summary from STACK.md]. Research should focus on what's NEEDED BEYOND existing capabilities, not re-research the existing system.
 </milestone_context>
 
 <question>
@@ -780,6 +822,9 @@ Subsequent: How do [target features] integrate with existing [domain] architectu
 
 <files_to_read>
 - {project_path} (Project context)
+{If codebase_context_files is not empty:}
+- .planning/codebase/ARCHITECTURE.md (Existing system architecture)
+- .planning/codebase/STACK.md (Existing tech stack)
 </files_to_read>
 
 <downstream_consumer>
@@ -812,6 +857,9 @@ Project Research — Pitfalls dimension for [domain derived from specs].
 
 Greenfield: What do [domain] projects commonly get wrong? Critical mistakes?
 Subsequent: What are common mistakes when adding [target features] to [domain]?
+
+{If codebase_context_files is not empty:}
+Brownfield: Existing codebase uses [summary from STACK.md]. Research should focus on what's NEEDED BEYOND existing capabilities, not re-research the existing system.
 </milestone_context>
 
 <question>
@@ -820,6 +868,9 @@ Subsequent: What are common mistakes when adding [target features] to [domain]?
 
 <files_to_read>
 - {project_path} (Project context)
+{If codebase_context_files is not empty:}
+- .planning/codebase/ARCHITECTURE.md (Existing system architecture)
+- .planning/codebase/STACK.md (Existing tech stack)
 </files_to_read>
 
 <downstream_consumer>
@@ -898,17 +949,23 @@ Read and internalize:
 The agent should:
 
 1. **Extract all requirements** from PROJECT.md's Active requirements list (these came from spec synthesis in Phase 1)
-2. **Organize into domain-appropriate categories** (Claude's discretion — can mirror spec structure or create better groupings based on the project domain)
-3. **Assign REQ-IDs** using the format `[CATEGORY]-[NUMBER]` (e.g., AUTH-01, DATA-02, UI-03)
+2. **Include Validated capabilities from PROJECT.md** (brownfield): Validated items from Step 7 should also appear in REQUIREMENTS.md as pre-satisfied items. These get REQ-IDs like Active requirements but are marked as already complete:
+   - Checked status: `- [x] **CAT-01**: [Capability] <!-- existing -->`
+   - Assigned to no phase (N/A) in the Traceability table
+   - Traceability table status shows "Validated" instead of "Pending"
+   - This ensures Validated capabilities don't get roadmap phases assigned (CONTEXT.md locked decision)
+3. **Organize into domain-appropriate categories** (Claude's discretion — can mirror spec structure or create better groupings based on the project domain)
+4. **Assign REQ-IDs** using the format `[CATEGORY]-[NUMBER]` (e.g., AUTH-01, DATA-02, UI-03)
    - Category prefix should be a short, descriptive abbreviation (3-5 chars)
    - Numbers are sequential within each category starting at 01
-4. **Make each requirement specific, testable, and user-centric:**
+   - Validated (existing) and Active (new) requirements share the same numbering within categories
+5. **Make each requirement specific, testable, and user-centric:**
    - Good: "User can reset password via email link"
    - Bad: "Handle password reset"
    - Good: "API responds within 200ms for read operations"
    - Bad: "Fast API"
-5. **Use research findings to INFORM the wording** — e.g., if research says "JWT is standard for auth", shape the auth requirement to mention JWT if the spec implied token auth. Research makes requirements more precise, but does NOT add new requirements beyond what specs define
-6. **Include traceability:** each requirement notes which spec file(s) it originated from using the HTML comment pattern established in Phase 1: `<!-- from: filename.md -->`
+6. **Use research findings to INFORM the wording** — e.g., if research says "JWT is standard for auth", shape the auth requirement to mention JWT if the spec implied token auth. Research makes requirements more precise, but does NOT add new requirements beyond what specs define
+7. **Include traceability:** each requirement notes which spec file(s) it originated from using the HTML comment pattern established in Phase 1: `<!-- from: filename.md -->`. For Validated items, use `<!-- existing -->`
 
 ### 11c. Generate REQUIREMENTS.md
 
@@ -926,6 +983,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### [Category 1]
 
+{If codebase_capabilities produced Validated items in this category:}
+- [x] **CAT-01**: [Existing capability] <!-- existing -->
+- [ ] **CAT-02**: [New requirement from specs] <!-- from: spec-file.md -->
+- [ ] **CAT-03**: [New requirement from specs] <!-- from: spec-file.md, other.md -->
+
+{If no Validated items (greenfield):}
 - [ ] **CAT-01**: [Specific, testable requirement] <!-- from: spec-file.md -->
 - [ ] **CAT-02**: [Specific, testable requirement] <!-- from: spec-file.md, other.md -->
 
@@ -953,13 +1016,20 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
+{If Validated items exist:}
+| CAT-01 | N/A | Validated |
+| CAT-02 | TBD | Pending |
+| CAT-03 | TBD | Pending |
+
+{If no Validated items (greenfield):}
 | CAT-01 | TBD | Pending |
 | CAT-02 | TBD | Pending |
 
 **Coverage:**
-- v1 requirements: [N] total
+- v1 requirements: [N] total ([M] validated, [N-M] new)
+- Validated (existing): [M] (no phases needed)
 - Mapped to phases: 0 (roadmap not yet created)
-- Unmapped: [N]
+- Unmapped: [N-M]
 ```
 
 ### 11d. Traceability Placeholder

@@ -917,7 +917,58 @@ The Traceability section starts with all requirements unmapped (Phase = TBD, Sta
 
 **Do NOT commit** — all artifacts will be committed in one atomic commit at the end of the pipeline (Plan 03).
 
-<!-- Step 12 added by Plan 03 -->
+## 12. Create Roadmap
+
+**Display progress:**
+```
+Creating roadmap...
+```
+
+### 12a. Spawn Roadmapper
+
+Spawn gsd-roadmapper agent:
+
+```
+Task(prompt="
+<planning_context>
+
+<files_to_read>
+- .planning/PROJECT.md (Project context)
+- .planning/REQUIREMENTS.md (v1 Requirements)
+- .planning/research/SUMMARY.md (Research findings)
+- .planning/config.json (Depth and mode settings)
+</files_to_read>
+
+</planning_context>
+
+<instructions>
+Create roadmap:
+1. Derive phases from requirements (don't impose structure)
+2. Map every v1 requirement to exactly one phase
+3. Derive 2-5 success criteria per phase (observable user behaviors)
+4. Validate 100% coverage
+5. Write files immediately (ROADMAP.md, STATE.md, update REQUIREMENTS.md traceability)
+6. Return ROADMAP CREATED with summary
+
+Write files first, then return. This ensures artifacts persist even if context is lost.
+</instructions>
+", subagent_type="gsd-roadmapper", model="{roadmapper_model}", description="Create roadmap")
+```
+
+### 12b. Handle Roadmapper Return
+
+**If `## ROADMAP BLOCKED`:**
+- Present blocker information to the user
+- Work with user to resolve
+- Re-spawn when resolved
+
+**If `## ROADMAP CREATED`:**
+- Continue to Step 13 — no approval gate
+- Do NOT present the roadmap for approval (unlike the interactive flow's Step 8 which asks "Does this roadmap structure work?")
+
+**No approval gate** — the spec-from-file flow has no approval gates anywhere (PIPE-08). The roadmap is generated and used as-is.
+
+**Do NOT commit yet** — atomic commit in Step 13.
 
 </process>
 

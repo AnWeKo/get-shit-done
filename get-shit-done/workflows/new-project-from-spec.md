@@ -79,7 +79,30 @@ Aborted. Existing .planning/ artifacts preserved.
 
 ## 3. Brownfield Offer
 
-**If `needs_codebase_map` is true** (from init — existing code detected but no codebase map):
+**Three scenarios, checked in order:**
+
+### 3a. Existing Codebase Map
+
+**If `has_codebase_map` is true** (from init — codebase map already exists in `.planning/codebase/`):
+
+Use AskUserQuestion:
+- header: "Codebase Map"
+- question: "Found an existing codebase map in .planning/codebase/. Use it or refresh?"
+- options:
+  - "Use existing" — Proceed using the current codebase map
+  - "Refresh map" — Run /gsd:map-codebase to update, then return to /gsd:new-project-from-spec
+
+**If "Refresh map":**
+```
+Run `/gsd:map-codebase` first, then return to `/gsd:new-project-from-spec`
+```
+Exit command.
+
+**If "Use existing":** Continue to Step 3b (capability extraction).
+
+### 3a (alt). No Codebase Map, but Existing Code
+
+**If `has_codebase_map` is false AND `needs_codebase_map` is true** (from init — existing code detected but no codebase map):
 
 Use AskUserQuestion:
 - header: "Codebase"
@@ -94,7 +117,30 @@ Run `/gsd:map-codebase` first, then return to `/gsd:new-project-from-spec`
 ```
 Exit command.
 
-**If "Skip mapping" OR `needs_codebase_map` is false:** Continue to Step 4.
+**If "Skip mapping":** Set `codebase_capabilities` to empty list and `codebase_context_files` to empty list. Continue to Step 4 (greenfield path).
+
+### 3a (greenfield). No Existing Code
+
+**If `needs_codebase_map` is false AND `has_codebase_map` is false:** Set `codebase_capabilities` to empty list and `codebase_context_files` to empty list. Continue to Step 4.
+
+## 3b. Extract Codebase Capabilities
+
+**This step runs only when `has_codebase_map` is true** (user chose "Use existing" in Step 3a, or map was already present).
+
+Mirrors the pattern from the interactive `new-project.md` workflow (lines 289-314) where codebase capabilities become Validated requirements.
+
+1. Read `.planning/codebase/ARCHITECTURE.md` and `.planning/codebase/STACK.md`
+2. Identify what the codebase already does — extract capabilities as a list of descriptions (e.g., "JWT authentication with refresh tokens", "PostgreSQL database with Prisma ORM", "REST API with Express")
+3. Store as `codebase_capabilities` (a list of capability descriptions) for use in Step 7
+
+Also enumerate and store `codebase_context_files` — the list of codebase map files that exist in `.planning/codebase/` (ARCHITECTURE.md, STACK.md, and any others such as STRUCTURE.md, CONVENTIONS.md, INTEGRATIONS.md) for passing to research agents in Step 10.
+
+**Display progress:**
+```
+Extracting capabilities from codebase map...
+  Found {N} existing capabilities
+  Codebase context: {list of files}
+```
 
 ## 4. Spec Folder Validation and File Reading
 

@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Fully automated project initialization from spec files — user provides specs, GSD produces complete planning structure ready for execution
-**Current focus:** Phase 3 complete — brownfield detection, capability merging, and spec-vs-research validation all done. Ready for Phase 4.
+**Current focus:** Phase 4 in progress — large spec folder resilience done, cross-runtime verification next.
 
 ## Current Position
 
-Phase: 3 of 4 (Brownfield & Validation)
-Plan: 2 of 2 in current phase
-Status: Phase complete
-Last activity: 2026-02-22 — Completed 03-02-PLAN.md
+Phase: 4 of 4 (Multi-Runtime & Polish)
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-02-22 — Completed 04-01-PLAN.md
 
-Progress: [████████░░] 78%
+Progress: [████████░░] 89%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: 3 min
-- Total execution time: 0.27 hours
+- Total execution time: 0.30 hours
 
 **By Phase:**
 
@@ -31,8 +31,10 @@ Progress: [████████░░] 78%
 | 2. Pipeline Automation | 3/3 ✓ | 6 min | 2 min |
 | 3. Brownfield & Validation | 2/2 ✓ | 4 min | 2 min |
 
+| 4. Multi-Runtime & Polish | 1/2 | 2 min | 2 min |
+
 **Recent Trend:**
-- Last 5 plans: 02-02 (2 min), 02-03 (2 min), 03-01 (2 min), 03-02 (2 min)
+- Last 5 plans: 02-03 (2 min), 03-01 (2 min), 03-02 (2 min), 04-01 (2 min)
 - Trend: —
 
 *Updated after each plan completion*
@@ -74,6 +76,8 @@ Recent decisions affecting current work:
 - [03-02]: Minor contradictions flagged in Key Decisions, non-blocking
 - [03-02]: Major contradictions: Keep spec / Accept research / Custom resolution options
 - [03-02]: Custom resolutions replace original spec assumption and flow to requirements
+- [04-01]: 100KB threshold triggers content budget; 3 priority tiers across 9 classification roles
+- [04-01]: Summarized file notices only shown during contradiction resolution, not proactively
 
 ### Pending Todos
 
@@ -81,10 +85,10 @@ None yet.
 
 ### Blockers/Concerns
 
-- Token limit strategy for large spec folders needs decision during Phase 4 planning
+None currently. (Token limit strategy resolved in 04-01 via content budgeting.)
 
 ## Session Continuity
 
-Last session: 2026-02-22T09:09:53Z
-Stopped at: Completed 03-02-PLAN.md (Phase 3 complete)
+Last session: 2026-02-22T09:48:30Z
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None

@@ -77,7 +77,7 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Large spec folder resilience & edge case handling (content budgeting, priority tiers, empty/encoding edge cases)
+- [x] 04-01-PLAN.md — Large spec folder resilience & edge case handling (content budgeting, priority tiers, empty/encoding edge cases)
 - [ ] 04-02-PLAN.md — Cross-runtime verification & E2E test fixture (installer output checks, test fixture, automated tests)
 
 ## Progress
@@ -90,4 +90,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Spec Reading & Synthesis | 2/2 | Complete | 2026-02-21 |
 | 2. Pipeline Automation | 3/3 | Complete | 2026-02-22 |
 | 3. Brownfield & Validation | 2/2 | Complete | 2026-02-22 |
-| 4. Multi-Runtime & Polish | 0/2 | Not started | - |
+| 4. Multi-Runtime & Polish | 1/2 | In progress | - |

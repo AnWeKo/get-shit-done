@@ -15,7 +15,7 @@ Requirements for `/gsd-plan-all` batch planning command.
 
 ### Orchestration
 
-- [ ] **ORCH-01**: Workflow reads ROADMAP.md and identifies all unplanned phases
+- [x] **ORCH-01**: Workflow reads ROADMAP.md and identifies all unplanned phases
 - [ ] **ORCH-02**: Phases are planned sequentially in phase-number order
 - [ ] **ORCH-03**: Each phase invokes the existing plan-phase pipeline (researcher if config enabled, planner, checker if config enabled)
 - [ ] **ORCH-04**: Each phase plan is committed immediately after creation
@@ -60,7 +60,7 @@ Requirements for `/gsd-plan-all` batch planning command.
 | CMD-01 | Phase 5 | Pending |
 | CMD-02 | Phase 5 | Pending |
 | CMD-03 | Phase 5 | Pending |
-| ORCH-01 | Phase 5 | Pending |
+| ORCH-01 | Phase 5 | Complete |
 | ORCH-02 | Phase 6 | Pending |
 | ORCH-03 | Phase 6 | Pending |
 | ORCH-04 | Phase 6 | Pending |

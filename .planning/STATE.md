@@ -5,33 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Fully automated project initialization from spec files — user provides specs, GSD produces complete planning structure ready for execution
-**Current focus:** Phase 2: Pipeline Automation — config extraction and model resolution done
+**Current focus:** Phase 2: Pipeline Automation — config, research, and requirements steps done
 
 ## Current Position
 
 Phase: 2 of 4 (Pipeline Automation)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-22 — Completed 02-01-PLAN.md
+Last activity: 2026-02-22 — Completed 02-02-PLAN.md
 
-Progress: [███░░░░░░░] 33%
+Progress: [████░░░░░░] 44%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
+- Total plans completed: 4
 - Average duration: 3 min
-- Total execution time: 0.15 hours
+- Total execution time: 0.18 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Spec Reading & Synthesis | 2/2 ✓ | 7 min | 3.5 min |
-| 2. Pipeline Automation | 1/3 | 2 min | 2 min |
+| 2. Pipeline Automation | 2/3 | 4 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2 min), 01-02 (5 min), 02-01 (2 min)
+- Last 5 plans: 01-01 (2 min), 01-02 (5 min), 02-01 (2 min), 02-02 (2 min)
 - Trend: —
 
 *Updated after each plan completion*
@@ -57,6 +57,9 @@ Recent decisions affecting current work:
 - [02-01]: Conservative inference: ambiguous signals default to asking user, not guessing
 - [02-01]: Per-value AskUserQuestion choices for config confirmation
 - [02-01]: No commit in config step — deferred to Plan 03 atomic commit
+- [02-02]: Research topics derived from spec content, not generic questions
+- [02-02]: Requirements come from specs only; research informs wording precision
+- [02-02]: REQ-IDs use [CATEGORY]-[NUMBER] format with domain-specific categories
 
 ### Pending Todos
 
@@ -68,6 +71,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-22T08:21:00Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-02-22T08:25:46Z
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None

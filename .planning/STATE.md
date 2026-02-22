@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Fully automated project initialization from spec files — user provides specs, GSD produces complete planning structure ready for execution
-**Current focus:** Phase 2 complete — full pipeline workflow finished. Ready for Phase 3: Brownfield & Validation
+**Current focus:** Phase 3 in progress — brownfield codebase detection and capability merging done. Contradiction surfacing next.
 
 ## Current Position
 
-Phase: 2 of 4 (Pipeline Automation)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-02-22 — Completed 02-03-PLAN.md
+Phase: 3 of 4 (Brownfield & Validation)
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-02-22 — Completed 03-01-PLAN.md
 
-Progress: [█████░░░░░] 56%
+Progress: [██████░░░░] 67%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
+- Total plans completed: 6
 - Average duration: 3 min
-- Total execution time: 0.20 hours
+- Total execution time: 0.23 hours
 
 **By Phase:**
 
@@ -29,9 +29,10 @@ Progress: [█████░░░░░] 56%
 |-------|-------|-------|----------|
 | 1. Spec Reading & Synthesis | 2/2 ✓ | 7 min | 3.5 min |
 | 2. Pipeline Automation | 3/3 ✓ | 6 min | 2 min |
+| 3. Brownfield & Validation | 1/2 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (5 min), 02-01 (2 min), 02-02 (2 min), 02-03 (2 min)
+- Last 5 plans: 02-01 (2 min), 02-02 (2 min), 02-03 (2 min), 03-01 (2 min)
 - Trend: —
 
 *Updated after each plan completion*
@@ -63,6 +64,11 @@ Recent decisions affecting current work:
 - [02-03]: No approval gate after roadmap — spec-from-file flow is fully automated (PIPE-08)
 - [02-03]: Atomic commit includes all 6 artifacts plus spec-references if present
 - [02-03]: commit_docs and has_git conditions checked before committing
+- [03-01]: Validated capabilities auto-marked without user confirmation
+- [03-01]: Partial overlaps split into Validated + Active line items
+- [03-01]: Unmentioned codebase capabilities in separate "Existing Capabilities" section
+- [03-01]: All 4 researchers receive brownfield context conditionally
+- [03-01]: Validated items get N/A phase in REQUIREMENTS.md traceability
 
 ### Pending Todos
 
@@ -74,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-22T08:30:30Z
-Stopped at: Completed 02-03-PLAN.md — Phase 2 complete
+Last session: 2026-02-22T09:04:45Z
+Stopped at: Completed 03-01-PLAN.md
 Resume file: None

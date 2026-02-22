@@ -23,14 +23,14 @@ Requirements for `/gsd-plan-all` batch planning command.
 
 ### Retry
 
-- [ ] **RTRY-01**: When plan-checker flags issues, planner is re-spawned with checker feedback automatically
-- [ ] **RTRY-02**: Retry is capped at a maximum number of attempts per phase (3 retries, matching existing plan-phase)
-- [ ] **RTRY-03**: If retries exhausted, best available plan is committed and workflow continues to next phase
+- [x] **RTRY-01**: When plan-checker flags issues, planner is re-spawned with checker feedback automatically
+- [x] **RTRY-02**: Retry is capped at a maximum number of attempts per phase (3 retries, matching existing plan-phase)
+- [x] **RTRY-03**: If retries exhausted, best available plan is committed and workflow continues to next phase
 
 ### State
 
 - [x] **STAT-01**: STATE.md is updated as each phase is planned (current phase, status, last activity)
-- [ ] **STAT-02**: On completion, STATE.md reflects all phases planned and ready for execution
+- [x] **STAT-02**: On completion, STATE.md reflects all phases planned and ready for execution
 
 ## Future Requirements
 
@@ -66,10 +66,10 @@ Requirements for `/gsd-plan-all` batch planning command.
 | ORCH-04 | Phase 6 | Complete |
 | ORCH-05 | Phase 6 | Complete |
 | STAT-01 | Phase 6 | Complete |
-| RTRY-01 | Phase 7 | Pending |
-| RTRY-02 | Phase 7 | Pending |
-| RTRY-03 | Phase 7 | Pending |
-| STAT-02 | Phase 7 | Pending |
+| RTRY-01 | Phase 7 | Complete |
+| RTRY-02 | Phase 7 | Complete |
+| RTRY-03 | Phase 7 | Complete |
+| STAT-02 | Phase 7 | Complete |
 
 **Coverage:**
 - v2.0 requirements: 13 total

@@ -20,7 +20,7 @@ then plans each one sequentially using the existing plan-phase pipeline.
 **Default flow:** Discover unplanned phases -> Plan each sequentially -> Report
 
 **Orchestrator role:** Initialize, discover unplanned phases, display summary,
-plan each phase in order (Phase 6 adds the loop), report results.
+plan each phase in order via Task subagents, commit after each, report results.
 </objective>
 
 <execution_context>

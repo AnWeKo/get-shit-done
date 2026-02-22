@@ -64,7 +64,7 @@ Plans:
 
 Plans:
 - [x] 03-01-PLAN.md — Brownfield codebase detection & capability merging (BRWN-01, BRWN-02)
-- [ ] 03-02-PLAN.md — Spec-vs-research validation & contradiction surfacing (PIPE-07)
+- [x] 03-02-PLAN.md — Spec-vs-research validation & contradiction surfacing (PIPE-07)
 
 ### Phase 4: Multi-Runtime & Polish
 **Goal**: The command works reliably across all supported runtimes and handles edge cases gracefully
@@ -89,5 +89,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Spec Reading & Synthesis | 2/2 | Complete | 2026-02-21 |
 | 2. Pipeline Automation | 3/3 | Complete | 2026-02-22 |
-| 3. Brownfield & Validation | 1/2 | In progress | - |
+| 3. Brownfield & Validation | 2/2 | Complete | 2026-02-22 |
 | 4. Multi-Runtime & Polish | 0/2 | Not started | - |

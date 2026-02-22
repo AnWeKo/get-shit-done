@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Fully automated project initialization from spec files — user provides specs, GSD produces complete planning structure ready for execution
-**Current focus:** Phase 3 in progress — brownfield codebase detection and capability merging done. Contradiction surfacing next.
+**Current focus:** Phase 3 complete — brownfield detection, capability merging, and spec-vs-research validation all done. Ready for Phase 4.
 
 ## Current Position
 
 Phase: 3 of 4 (Brownfield & Validation)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-02-22 — Completed 03-01-PLAN.md
+Plan: 2 of 2 in current phase
+Status: Phase complete
+Last activity: 2026-02-22 — Completed 03-02-PLAN.md
 
-Progress: [██████░░░░] 67%
+Progress: [████████░░] 78%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
+- Total plans completed: 7
 - Average duration: 3 min
-- Total execution time: 0.23 hours
+- Total execution time: 0.27 hours
 
 **By Phase:**
 
@@ -29,10 +29,10 @@ Progress: [██████░░░░] 67%
 |-------|-------|-------|----------|
 | 1. Spec Reading & Synthesis | 2/2 ✓ | 7 min | 3.5 min |
 | 2. Pipeline Automation | 3/3 ✓ | 6 min | 2 min |
-| 3. Brownfield & Validation | 1/2 | 2 min | 2 min |
+| 3. Brownfield & Validation | 2/2 ✓ | 4 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (2 min), 02-02 (2 min), 02-03 (2 min), 03-01 (2 min)
+- Last 5 plans: 02-02 (2 min), 02-03 (2 min), 03-01 (2 min), 03-02 (2 min)
 - Trend: —
 
 *Updated after each plan completion*
@@ -69,6 +69,11 @@ Recent decisions affecting current work:
 - [03-01]: Unmentioned codebase capabilities in separate "Existing Capabilities" section
 - [03-01]: All 4 researchers receive brownfield context conditionally
 - [03-01]: Validated items get N/A phase in REQUIREMENTS.md traceability
+- [03-02]: Four contradiction categories: tech conflicts, deprecated deps, arch mismatches, feasibility
+- [03-02]: Major = high impact AND high confidence; everything else = minor
+- [03-02]: Minor contradictions flagged in Key Decisions, non-blocking
+- [03-02]: Major contradictions: Keep spec / Accept research / Custom resolution options
+- [03-02]: Custom resolutions replace original spec assumption and flow to requirements
 
 ### Pending Todos
 
@@ -80,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-22T09:04:45Z
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-02-22T09:09:53Z
+Stopped at: Completed 03-02-PLAN.md (Phase 3 complete)
 Resume file: None

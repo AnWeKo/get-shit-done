@@ -264,6 +264,26 @@ Each plan is small enough to execute in a fresh context window. No degradation, 
 
 **Creates:** `{phase_num}-RESEARCH.md`, `{phase_num}-{N}-PLAN.md`
 
+#### Alternative: Batch Plan All Phases
+
+```
+/gsd:plan-all
+```
+
+**Want to plan everything at once?** Instead of planning one phase at a time, batch-plan every unplanned phase in your roadmap with zero interaction.
+
+The system:
+
+1. **Discovers** — Reads ROADMAP.md, identifies all unplanned phases
+2. **Plans sequentially** — Plans each phase in order, so later phases can build on earlier ones
+3. **Retries automatically** — If the plan-checker flags issues, re-invokes the planner with feedback (up to 3 attempts)
+4. **Commits as it goes** — Each phase's plans are committed immediately
+5. **Reports progress** — Shows "Phase N of M planned" as each completes
+
+If a phase fails after retries, the best available plan is committed and planning continues to the next phase. Nothing aborts.
+
+Use `--dry-run` to see which phases would be planned without actually planning them.
+
 ---
 
 ### 4. Execute Phase
@@ -480,6 +500,7 @@ You're never locked in. The system adapts.
 | `/gsd:new-project-from-spec [path]` | Spec-based initialization: reads markdown specs → same output, no questions |
 | `/gsd:discuss-phase [N] [--auto]` | Capture implementation decisions before planning |
 | `/gsd:plan-phase [N] [--auto]` | Research + plan + verify for a phase |
+| `/gsd:plan-all [--dry-run]` | Batch-plan all unplanned phases — zero interaction |
 | `/gsd:execute-phase <N>` | Execute all plans in parallel waves, verify when complete |
 | `/gsd:verify-work [N]` | Manual user acceptance testing ¹ |
 | `/gsd:audit-milestone` | Verify milestone achieved its definition of done |

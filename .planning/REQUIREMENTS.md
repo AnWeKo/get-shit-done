@@ -16,10 +16,10 @@ Requirements for `/gsd-plan-all` batch planning command.
 ### Orchestration
 
 - [x] **ORCH-01**: Workflow reads ROADMAP.md and identifies all unplanned phases
-- [ ] **ORCH-02**: Phases are planned sequentially in phase-number order
-- [ ] **ORCH-03**: Each phase invokes the existing plan-phase pipeline (researcher if config enabled, planner, checker if config enabled)
-- [ ] **ORCH-04**: Each phase plan is committed immediately after creation
-- [ ] **ORCH-05**: User sees progress updates as each phase completes (phase N of M status)
+- [x] **ORCH-02**: Phases are planned sequentially in phase-number order
+- [x] **ORCH-03**: Each phase invokes the existing plan-phase pipeline (researcher if config enabled, planner, checker if config enabled)
+- [x] **ORCH-04**: Each phase plan is committed immediately after creation
+- [x] **ORCH-05**: User sees progress updates as each phase completes (phase N of M status)
 
 ### Retry
 
@@ -29,7 +29,7 @@ Requirements for `/gsd-plan-all` batch planning command.
 
 ### State
 
-- [ ] **STAT-01**: STATE.md is updated as each phase is planned (current phase, status, last activity)
+- [x] **STAT-01**: STATE.md is updated as each phase is planned (current phase, status, last activity)
 - [ ] **STAT-02**: On completion, STATE.md reflects all phases planned and ready for execution
 
 ## Future Requirements
@@ -61,11 +61,11 @@ Requirements for `/gsd-plan-all` batch planning command.
 | CMD-02 | Phase 5 | Complete |
 | CMD-03 | Phase 5 | Complete |
 | ORCH-01 | Phase 5 | Complete |
-| ORCH-02 | Phase 6 | Pending |
-| ORCH-03 | Phase 6 | Pending |
-| ORCH-04 | Phase 6 | Pending |
-| ORCH-05 | Phase 6 | Pending |
-| STAT-01 | Phase 6 | Pending |
+| ORCH-02 | Phase 6 | Complete |
+| ORCH-03 | Phase 6 | Complete |
+| ORCH-04 | Phase 6 | Complete |
+| ORCH-05 | Phase 6 | Complete |
+| STAT-01 | Phase 6 | Complete |
 | RTRY-01 | Phase 7 | Pending |
 | RTRY-02 | Phase 7 | Pending |
 | RTRY-03 | Phase 7 | Pending |

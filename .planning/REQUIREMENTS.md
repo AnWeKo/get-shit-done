@@ -25,14 +25,14 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Pipeline Automation
 
 - [x] **PIPE-01**: Workflow generates PROJECT.md from spec content (identical format to interactive flow)
-- [ ] **PIPE-02**: Workflow extracts config preferences from spec prose (e.g., "ship fast" → quick depth)
-- [ ] **PIPE-03**: Workflow falls back to asking user for config preferences not inferable from specs
-- [ ] **PIPE-04**: Workflow always runs research phase (4 parallel researchers + synthesizer)
-- [ ] **PIPE-05**: Workflow generates REQUIREMENTS.md with domain-specific categories and REQ-IDs
-- [ ] **PIPE-06**: Workflow spawns roadmapper to generate ROADMAP.md and STATE.md
+- [x] **PIPE-02**: Workflow extracts config preferences from spec prose (e.g., "ship fast" → quick depth)
+- [x] **PIPE-03**: Workflow falls back to asking user for config preferences not inferable from specs
+- [x] **PIPE-04**: Workflow always runs research phase (4 parallel researchers + synthesizer)
+- [x] **PIPE-05**: Workflow generates REQUIREMENTS.md with domain-specific categories and REQ-IDs
+- [x] **PIPE-06**: Workflow spawns roadmapper to generate ROADMAP.md and STATE.md
 - [ ] **PIPE-07**: Workflow validates spec assumptions against research findings and surfaces contradictions
-- [ ] **PIPE-08**: No approval gates — all artifacts committed automatically
-- [ ] **PIPE-09**: Requirements include full traceability (each requirement mapped to a phase)
+- [x] **PIPE-08**: No approval gates — all artifacts committed automatically
+- [x] **PIPE-09**: Requirements include full traceability (each requirement mapped to a phase)
 
 ### Brownfield Support
 
@@ -80,14 +80,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SPEC-04 | Phase 1 | Complete |
 | SPEC-05 | Phase 1 | Complete |
 | PIPE-01 | Phase 1 | Complete |
-| PIPE-02 | Phase 2 | Pending |
-| PIPE-03 | Phase 2 | Pending |
-| PIPE-04 | Phase 2 | Pending |
-| PIPE-05 | Phase 2 | Pending |
-| PIPE-06 | Phase 2 | Pending |
+| PIPE-02 | Phase 2 | Complete |
+| PIPE-03 | Phase 2 | Complete |
+| PIPE-04 | Phase 2 | Complete |
+| PIPE-05 | Phase 2 | Complete |
+| PIPE-06 | Phase 2 | Complete |
 | PIPE-07 | Phase 3 | Pending |
-| PIPE-08 | Phase 2 | Pending |
-| PIPE-09 | Phase 2 | Pending |
+| PIPE-08 | Phase 2 | Complete |
+| PIPE-09 | Phase 2 | Complete |
 | BRWN-01 | Phase 3 | Pending |
 | BRWN-02 | Phase 3 | Pending |
 
@@ -98,4 +98,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-21*
-*Last updated: 2026-02-21 after Phase 1 completion*
+*Last updated: 2026-02-22 after Phase 2 completion*

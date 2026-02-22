@@ -51,7 +51,10 @@ Plans:
   3. Each completed phase plan is git committed immediately before the next phase begins
   4. User sees progress updates as each phase completes (e.g., "Phase 2 of 5 planned")
   5. STATE.md is updated with current phase, status, and last activity as each phase is planned
-**Plans**: TBD
+**Plans:** 1 plan
+
+Plans:
+- [ ] 06-01-PLAN.md — Sequential planning loop in plan-all workflow + command update
 
 ### Phase 7: Retry & Completion
 **Goal**: Plan-checker failures are handled automatically, and batch planning ends with a clean state
@@ -72,5 +75,5 @@ Plans:
 |-------|-----------|----------------|--------|-----------|
 | 1-4 | v1.0 | 9/9 | Complete | 2026-02-22 |
 | 5. Command & Phase Discovery | v2.0 | Complete    | 2026-02-22 | - |
-| 6. Sequential Planning Loop | v2.0 | 0/? | Not started | - |
+| 6. Sequential Planning Loop | v2.0 | 0/1 | Planned | - |
 | 7. Retry & Completion | v2.0 | 0/? | Not started | - |

@@ -1,7 +1,8 @@
 <purpose>
 Batch-plan all unplanned roadmap phases. Discovers which phases need planning, displays
-a summary table, then plans each sequentially. This file handles discovery and reporting —
-Phase 6 extends it to add the sequential planning loop.
+a summary table, then plans each one sequentially using the existing plan-phase pipeline.
+Each phase gets a fresh context window via Task subagent, with STATE.md updated and
+results committed after each phase completes.
 </purpose>
 
 <required_reading>
@@ -95,20 +96,158 @@ Display: `Dry run — exiting without planning.`
 
 Exit workflow.
 
-<!-- Phase 6 replaces this section -->
-## 5. Planning Loop Placeholder
+## 5. Sequential Planning Loop
 
+Initialize tracking:
+```
+PHASE_RESULTS = []    # Array of { number, name, result: "success" | "checkpoint" | "failed", error? }
+SUCCESS_COUNT = 0
+FAILURE_COUNT = 0
+TOTAL_TO_PLAN = unplanned_count   # from init JSON
+CURRENT_INDEX = 0
+```
+
+**For each phase in `unplanned_phases` (already sorted by phase number from init):**
+
+```
+CURRENT_INDEX += 1
+PHASE_NUM = phase.number
+PHASE_NAME = phase.name
+```
+
+### 5.1 Display Phase Banner
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ GSD ► PLANNING PHASE {PHASE_NUM} ({CURRENT_INDEX}/{TOTAL_TO_PLAN})
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Phase {PHASE_NUM}: {PHASE_NAME}
+```
+
+### 5.2 Update STATE.md
+
+```bash
+node ~/.claude/get-shit-done/bin/gsd-tools.cjs state patch \
+  --"Current focus" "Phase {PHASE_NUM} — {PHASE_NAME}" \
+  --"Status" "Batch planning" \
+  --"Last activity" "{date} — Planning phase {PHASE_NUM}"
+```
+
+### 5.3 Spawn plan-phase Subagent
+
+Build flags string from init config:
+- If `research_enabled` is false: add `--skip-research`
+- If `plan_checker_enabled` is false: add `--skip-verify`
+
+Spawn a Task subagent to plan this phase:
+
+```
+Task(
+  prompt="
+    <objective>
+    You are the plan-phase orchestrator. Plan Phase {PHASE_NUM}: {PHASE_NAME}.
+    </objective>
+
+    <execution_context>
+    @~/.claude/get-shit-done/workflows/plan-phase.md
+    @~/.claude/get-shit-done/references/ui-brand.md
+    </execution_context>
+
+    <arguments>
+    PHASE={PHASE_NUM}
+    ARGUMENTS='{PHASE_NUM} {flags}'
+    </arguments>
+
+    <instructions>
+    1. Read plan-phase.md from execution_context for your complete workflow
+    2. Follow ALL steps: initialize, parse arguments, validate phase, load context, handle research, check existing, spawn planner, handle checker/revision loop
+    3. When spawning researcher/planner/checker agents, use the model and subagent_type from the workflow
+    4. Do NOT use the Skill tool or /gsd: commands — reference workflow files directly with @file
+    5. Return your final status: PLANNING COMPLETE, CHECKPOINT REACHED, or PLANNING INCONCLUSIVE
+    </instructions>
+  ",
+  subagent_type="general-purpose",
+  description="Plan Phase {PHASE_NUM}"
+)
+```
+
+### 5.4 Handle plan-phase Return
+
+**If return contains "PLANNING COMPLETE":**
+```
+SUCCESS_COUNT += 1
+PHASE_RESULTS.push({ number: PHASE_NUM, name: PHASE_NAME, result: "success" })
+```
+Display: `✓ Phase {PHASE_NUM} planned`
+
+**If return contains "CHECKPOINT REACHED":**
+```
+SUCCESS_COUNT += 1
+PHASE_RESULTS.push({ number: PHASE_NUM, name: PHASE_NAME, result: "checkpoint" })
+```
+Display: `⚠ Phase {PHASE_NUM} planned (checkpoint skipped in batch mode)`
+
+**If return contains "PLANNING INCONCLUSIVE" or an error occurs:**
+```
+FAILURE_COUNT += 1
+PHASE_RESULTS.push({ number: PHASE_NUM, name: PHASE_NAME, result: "failed", error: error_message })
+```
+Display: `✗ Phase {PHASE_NUM} failed — continuing to next phase`
+
+### 5.5 Commit Planning Docs
+
+If `commit_docs` is true (from init):
+```bash
+node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit-docs "docs(phase-{PHASE_NUM}): batch plan phase {PHASE_NUM}"
+```
+
+### 5.6 Display Progress
+
+```
+Progress: {CURRENT_INDEX}/{TOTAL_TO_PLAN} phases planned
+```
+
+**End of loop — continue to next phase in `unplanned_phases`.**
+
+---
+
+### 5.7 Completion Summary
+
+After all phases have been processed:
+
+Display completion banner:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ GSD ► BATCH PLANNING COMPLETE ✓
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+Display results table:
+```
+| Phase | Name | Result |
+|-------|------|--------|
+```
+For each entry in PHASE_RESULTS:
+- result "success" → `✓ Planned`
+- result "checkpoint" → `⚠ Planned (checkpoint skipped)`
+- result "failed" → `✗ Failed`
+
+Display summary: `{SUCCESS_COUNT} of {TOTAL_TO_PLAN} phases planned successfully.`
+
+Update STATE.md with final state:
+```bash
+node ~/.claude/get-shit-done/bin/gsd-tools.cjs state patch \
+  --"Status" "Batch planning complete" \
+  --"Last activity" "{date} — Batch planned {SUCCESS_COUNT} phases"
+```
+
+**If FAILURE_COUNT > 0:**
 Display:
 ```
-Discovery complete. Sequential planning not yet implemented.
-
-To plan individual phases:
-/gsd:plan-phase 5
-/gsd:plan-phase 6
-/gsd:plan-phase 7
+{FAILURE_COUNT} phase(s) had issues — plan manually:
 ```
-
-This placeholder gets replaced by Phase 6's sequential loop implementation.
+For each failed phase: `/gsd:plan-phase {phase_number}`
 
 </process>
 
@@ -116,20 +255,30 @@ This placeholder gets replaced by Phase 6's sequential loop implementation.
 Output this markdown directly (not as a code block):
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- GSD ► DISCOVERY COMPLETE ✓
+ GSD ► BATCH PLANNING COMPLETE ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Found {N} phase(s) to plan.
+**{SUCCESS_COUNT} of {TOTAL_TO_PLAN} phases planned.**
+
+| Phase | Name | Result |
+|-------|------|--------|
+(results table from Step 5.7)
 
 ───────────────────────────────────────────────────────────────
 
 ## ▶ Next Up
 
-**Plan individual phases** — or wait for Phase 6 (sequential loop)
+**Execute Phase {first_phase}** — start running the phase plans
 
-`/gsd:plan-phase {first_unplanned}`
+`/gsd:execute-phase {first_phase}`
 
 <sub>`/clear` first → fresh context window</sub>
+
+───────────────────────────────────────────────────────────────
+
+**Also available:**
+- `/gsd:plan-phase {N}` — re-plan any failed phases
+- `/gsd:progress` — view project progress
 
 ───────────────────────────────────────────────────────────────
 </offer_next>
@@ -142,4 +291,11 @@ Found {N} phase(s) to plan.
 - [ ] --dry-run flag exits after discovery without planning
 - [ ] Nothing-to-plan case shows clean message with next steps
 - [ ] User sees discovery results before any planning begins
+- [ ] Sequential loop iterates each unplanned phase in order
+- [ ] Each phase spawns plan-phase as a Task subagent with correct flags
+- [ ] STATE.md updated via state patch before each phase and after completion
+- [ ] Planning docs committed after each successful phase plan
+- [ ] Progress displayed as each phase completes (N of M)
+- [ ] Failed phases do not abort the loop — reported at the end
+- [ ] Completion banner shows results table with per-phase status
 </success_criteria>

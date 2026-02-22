@@ -137,6 +137,7 @@ node ~/.claude/get-shit-done/bin/gsd-tools.cjs state patch \
 ### 5.3 Spawn plan-phase Subagent
 
 Build flags string from init config:
+- Always add: `--batch` (enables autonomous retry handling)
 - If `research_enabled` is false: add `--skip-research`
 - If `plan_checker_enabled` is false: add `--skip-verify`
 
@@ -165,6 +166,7 @@ Task(
     3. When spawning researcher/planner/checker agents, use the model and subagent_type from the workflow
     4. Do NOT use the Skill tool or /gsd: commands — reference workflow files directly with @file
     5. Return your final status: PLANNING COMPLETE, CHECKPOINT REACHED, or PLANNING INCONCLUSIVE
+    6. The --batch flag ensures autonomous operation — plan-phase will auto-proceed on retry exhaustion without user interaction
     </instructions>
   ",
   subagent_type="general-purpose",
@@ -236,13 +238,22 @@ For each entry in PHASE_RESULTS:
 Display summary: `{SUCCESS_COUNT} of {TOTAL_TO_PLAN} phases planned successfully.`
 
 Update STATE.md with final state:
+
+**If FAILURE_COUNT == 0 (all succeeded):**
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs state patch \
-  --"Status" "Batch planning complete" \
-  --"Last activity" "{date} — Batch planned {SUCCESS_COUNT} phases"
+  --"Status" "All phases planned — ready for execution" \
+  --"Last activity" "{date} — Batch planned {SUCCESS_COUNT}/{TOTAL_TO_PLAN} phases" \
+  --"Current focus" "Ready for /gsd-execute-phase"
 ```
 
 **If FAILURE_COUNT > 0:**
+```bash
+node ~/.claude/get-shit-done/bin/gsd-tools.cjs state patch \
+  --"Status" "Batch planning complete ({FAILURE_COUNT} failed)" \
+  --"Last activity" "{date} — Batch planned {SUCCESS_COUNT}/{TOTAL_TO_PLAN} phases ({FAILURE_COUNT} failed)" \
+  --"Current focus" "Review failed phases"
+```
 Display:
 ```
 {FAILURE_COUNT} phase(s) had issues — plan manually:
@@ -298,4 +309,6 @@ Output this markdown directly (not as a code block):
 - [ ] Progress displayed as each phase completes (N of M)
 - [ ] Failed phases do not abort the loop — reported at the end
 - [ ] Completion banner shows results table with per-phase status
+- [ ] --batch flag is passed to plan-phase subagent for autonomous retry handling
+- [ ] Final STATE.md update reflects "ready for execution" when all phases succeed
 </success_criteria>
